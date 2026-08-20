@@ -2,10 +2,10 @@ window.registerBook({
   "id": "hai-xiu-bian-se-long",
   "title": "害羞的小变色龙",
   "grade": 2,
-  "cover": "images/cover.svg",
+  "cover": "images/cover.webp",
   "pages": [
     {
-      "image": "images/p1.svg",
+      "image": "images/p1.webp",
       "text": "小变色龙奇奇有个小秘密：他一害羞，身上就会冒出粉红色的圆点点，怎么藏也藏不住。",
       "pinyin": [
         "xiǎo",
@@ -50,7 +50,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p2.svg",
+      "image": "images/p2.webp",
       "text": "上台唱歌的时候，奇奇一紧张，变成了一身圆点点。大家哈哈大笑，他红着脸溜进了花丛。",
       "pinyin": [
         "shàng",
@@ -96,7 +96,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p3.svg",
+      "image": "images/p3.webp",
       "text": "花丛里真安静。奇奇把自己变成叶子的绿色，一动不动，谁也找不到他。",
       "pinyin": [
         "huā",
@@ -134,7 +134,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p4.svg",
+      "image": "images/p4.webp",
       "text": "一场大雨过后，花儿都合上了花瓣。小蜜蜂们急得团团转：“找不到花蜜，宝宝们要饿肚子啦！”",
       "pinyin": [
         "yì",
@@ -183,7 +183,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p5.svg",
+      "image": "images/p5.webp",
       "text": "奇奇深吸一口气，爬上最高的枝头，把自己变成一朵最大最红的花，还闪着金边。",
       "pinyin": [
         "qí",
@@ -225,7 +225,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p6.svg",
+      "image": "images/p6.webp",
       "text": "“那里有花！”蜜蜂们嗡嗡地飞过来，跟着这朵“花”，找到了藏在叶子下面的真花蜜。",
       "pinyin": [
         "",
@@ -270,7 +270,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p7.svg",
+      "image": "images/p7.webp",
       "text": "现在，奇奇还是会害羞，还是会冒出圆点点。可是大家都说：那是全世界最可爱的圆点点！",
       "pinyin": [
         "xiàn",

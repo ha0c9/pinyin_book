@@ -2,10 +2,10 @@ window.registerBook({
   "id": "wo-niu-kuai-di",
   "title": "蜗牛快递员",
   "grade": 2,
-  "cover": "images/cover.svg",
+  "cover": "images/cover.webp",
   "pages": [
     {
-      "image": "images/p1.svg",
+      "image": "images/p1.webp",
       "text": "森林快递店来了一位新快递员，他是小蜗牛慢慢。",
       "pinyin": [
         "sēn",
@@ -33,7 +33,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p2.svg",
+      "image": "images/p2.webp",
       "text": "小猴子送信只要一分钟，慢慢送一封信却要走一整天。大家都笑他：“这么慢，能送什么呀？”",
       "pinyin": [
         "xiǎo",
@@ -81,7 +81,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p3.svg",
+      "image": "images/p3.webp",
       "text": "一天，熊奶奶来寄一件特别的快递：一颗小小的花种子，要送给住在山那边的兔宝宝。",
       "pinyin": [
         "yì",
@@ -125,7 +125,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p4.svg",
+      "image": "images/p4.webp",
       "text": "小猴子抢着说：“我跑得最快！”他抓起种子就跑，跑得太快，种子“咕噜”一下滚进了草丛，怎么找也找不到。",
       "pinyin": [
         "xiǎo",
@@ -181,7 +181,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p5.svg",
+      "image": "images/p5.webp",
       "text": "慢慢把第二颗种子轻轻放在背上，慢悠悠地出发了。",
       "pinyin": [
         "màn",
@@ -210,7 +210,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p6.svg",
+      "image": "images/p6.webp",
       "text": "他爬过小桥，翻过山坡。半路下起了小雨，种子在他背上悄悄发了芽。",
       "pinyin": [
         "tā",
@@ -247,7 +247,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p7.svg",
+      "image": "images/p7.webp",
       "text": "太阳出来了，小芽越长越高，还开出了一朵金黄色的小花。",
       "pinyin": [
         "tài",
@@ -279,7 +279,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p8.svg",
+      "image": "images/p8.webp",
       "text": "慢慢到达的那天，正好是兔宝宝的生日。“这是全世界最棒的快递！”大家都为慢慢鼓掌。",
       "pinyin": [
         "màn",

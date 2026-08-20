@@ -19,15 +19,15 @@
   "id": "故事拼音id（小写字母和连字符，如 xiao-huo-long）",
   "title": "故事标题",
   "grade": 2,
-  "cover": "images/cover.svg",
+  "cover": "images/cover.webp",
   "pages": [
-    { "image": "images/p1.svg", "text": "第一页的文字。" },
-    { "image": "images/p2.svg", "text": "第二页的文字。" }
+    { "image": "images/p1.webp", "text": "第一页的文字。" },
+    { "image": "images/p2.webp", "text": "第二页的文字。" }
   ]
 }
 ```
 
-> 若配图使用 AI 文生图（png/jpg/webp），把上面的 `.svg` 换成对应扩展名即可。
+> 配图默认使用 AI 文生图的 `.webp`；若用 SVG 占位，把扩展名改成 `.svg` 即可。
 
 ## 二、生成逐字拼音（book.js）
 
@@ -54,17 +54,16 @@ python3 tools/make_book.py books/<故事id>/story.json
 
 ## 三、生成配图
 
-每页配一张图，推荐 AI 文生图提示词模板：
+每页配一张图，推荐用 AI 文生图（webp/png/jpg），提示词模板：
 
 ```
-儿童绘本插画，温暖柔和的水彩/扁平风格，明亮色彩，圆润可爱的角色，画面中不要出现任何文字。
+儿童绘本插画，温暖柔和的水彩风格，明亮色彩，圆润可爱的角色，画面中不要出现任何文字。
 场景：<该页文字描述的画面>。
 主角外形保持一致：<主角的固定外形描述，如"圆滚滚的橘红色小火龙，米黄色肚皮，小翅膀">。
 ```
 
 图片保存到 `books/<故事id>/images/`，文件名与 story.json 中一致（p1、p2……，封面 cover）。
-建议压缩到长边 1280px 以内。范本书的 SVG 插画由 `tools/gen_placeholder_art.py` 程序生成，
-同名替换成 AI 图片（并更新 story.json 里的扩展名、重跑 make_book.py）即可升级画质。
+建议压缩为 webp、长边 ≤ 1280px。现有范本书已使用 AI 水彩图；若暂时无法文生图，可用 `tools/gen_placeholder_art.py` 生成扁平 SVG 占位。
 
 ## 四、上架
 
