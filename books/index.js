@@ -6,5 +6,7 @@ window.loadBooks([
   "books/hai-xiu-bian-se-long/book.js",
   "books/gui-tu-sai-pao/book.js",
   "books/wu-ya-he-shui/book.js",
-  "books/xiao-ma-guo-he/book.js"
+  "books/xiao-ma-guo-he/book.js",
+  "books/shen-bi-ma-liang/book.js",
+  "books/san-ge-he-shang/book.js"
 ]);
