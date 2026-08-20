@@ -21,10 +21,12 @@
 <!-- 阅读页 -->
 <section id="reader-view" class="view hidden">
   <header class="reader-header">
-    <button id="back-btn" class="icon-btn" title="回到书架" aria-label="回到书架">🏠</button>
     <div id="book-title" class="book-title"></div>
     <div class="reader-header-right">
-      <span id="page-indicator" class="page-indicator"></span>
+      <div class="page-tools">
+        <button id="back-btn" class="page-tool-btn" title="回到书架" aria-label="回到书架">🏠</button>
+        <span id="page-indicator" class="page-indicator"></span>
+      </div>
       <button id="settings-btn-2" class="icon-btn" title="设置" aria-label="设置">⚙️</button>
     </div>
   </header>
@@ -62,14 +64,6 @@
       <div class="option-group" id="fontsize-options">
         <button data-value="large">大</button>
         <button data-value="xlarge">特大</button>
-      </div>
-    </div>
-
-    <div class="setting-row">
-      <label>整页拼音（辅助模式）</label>
-      <div class="option-group" id="allpinyin-options">
-        <button data-value="off">关</button>
-        <button data-value="on">开</button>
       </div>
     </div>
 
