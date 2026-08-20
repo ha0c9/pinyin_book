@@ -1,0 +1,56 @@
+{
+  "id": "san-ge-he-shang",
+  "title": "三个和尚",
+  "grade": 2,
+  "cover": "images/cover.webp",
+  "pages": [
+    {
+      "image": "images/p1.webp",
+      "text": "高山上有一座小庙。庙里来了个小和尚，每天自己挑水喝，日子过得安稳。",
+      "fix": {
+        "16": "shang",
+        "29": "de"
+      }
+    },
+    {
+      "image": "images/p2.webp",
+      "text": "后来又来了个瘦和尚。两个人抬水，谁也不愿多走一步，水缸还能满着。",
+      "fix": {
+        "8": "shang"
+      }
+    },
+    {
+      "image": "images/p3.webp",
+      "text": "不久，又来了个胖和尚。三个人你看看我，我看看你，谁也不去山下挑水。",
+      "fix": {
+        "9": "shang"
+      }
+    },
+    {
+      "image": "images/p4.webp",
+      "text": "水缸渐渐空了。花儿蔫了，木鱼也敲不响了。三个和尚又渴又烦，谁也不说话。",
+      "fix": {
+        "23": "shang"
+      }
+    },
+    {
+      "image": "images/p5.webp",
+      "text": "一天夜里，老鼠碰倒了蜡烛。火苗爬上梁柱，小庙烧起来了！"
+    },
+    {
+      "image": "images/p6.webp",
+      "text": "“快救火！”三个人一起冲下山去挑水。一桶接一桶，把大火浇灭了。"
+    },
+    {
+      "image": "images/p7.webp",
+      "text": "天亮了，他们坐在修好的水缸边，忽然明白：人多力量大，可是人人都要动手才行。"
+    },
+    {
+      "image": "images/p8.webp",
+      "text": "从那天起，三个和尚轮流挑水，有时还一起抬。小庙的钟声，又在云雾里响起来了。",
+      "fix": {
+        "8": "shang"
+      }
+    }
+  ]
+}
