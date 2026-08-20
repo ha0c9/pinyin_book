@@ -104,6 +104,7 @@
     el.pageIndicator.textContent = "第 " + (currentPage + 1) + " / " + currentBook.pages.length + " 页";
     el.prevBtn.disabled = currentPage === 0;
     el.nextBtn.disabled = currentPage === currentBook.pages.length - 1;
+    if (el.firstPageBtn) el.firstPageBtn.disabled = currentPage === 0;
     saveProgress();
   }
 
@@ -112,6 +113,12 @@
     var next = currentPage + delta;
     if (next < 0 || next >= currentBook.pages.length) return;
     currentPage = next;
+    renderPage();
+  }
+
+  function gotoFirst() {
+    if (!currentBook || currentPage === 0) return;
+    currentPage = 0;
     renderPage();
   }
 
@@ -137,9 +144,11 @@
     el.bookTitle = $("book-title");
     el.prevBtn = $("prev-btn");
     el.nextBtn = $("next-btn");
+    el.firstPageBtn = $("first-page-btn");
 
     el.prevBtn.addEventListener("click", function () { goto(-1); });
     el.nextBtn.addEventListener("click", function () { goto(1); });
+    el.firstPageBtn.addEventListener("click", gotoFirst);
 
     document.addEventListener("keydown", function (e) {
       if (!currentBook) return;

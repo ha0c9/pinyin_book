@@ -21,10 +21,11 @@
 <!-- 阅读页 -->
 <section id="reader-view" class="view hidden">
   <header class="reader-header">
+    <button id="back-btn" class="icon-btn" title="回到书架" aria-label="回到书架">🏠</button>
     <div id="book-title" class="book-title"></div>
     <div class="reader-header-right">
       <div class="page-tools">
-        <button id="back-btn" class="page-tool-btn" title="回到书架" aria-label="回到书架">🏠</button>
+        <button id="first-page-btn" class="page-tool-btn" title="回到第一页" aria-label="回到第一页">⏮</button>
         <span id="page-indicator" class="page-indicator"></span>
       </div>
       <button id="settings-btn-2" class="icon-btn" title="设置" aria-label="设置">⚙️</button>
@@ -32,14 +33,16 @@
   </header>
 
   <main class="page-area">
-    <button id="prev-btn" class="nav-btn nav-prev" aria-label="上一页">‹</button>
     <div id="page-content" class="page-content">
       <div id="page-image-wrap" class="page-image-wrap">
         <img id="page-image" class="page-image" alt="故事插图">
       </div>
+      <div class="page-nav">
+        <button id="prev-btn" class="nav-btn nav-prev" aria-label="上一页">‹</button>
+        <button id="next-btn" class="nav-btn nav-next" aria-label="下一页">›</button>
+      </div>
       <div id="page-text" class="page-text"></div>
     </div>
-    <button id="next-btn" class="nav-btn nav-next" aria-label="下一页">›</button>
   </main>
 </section>
 
