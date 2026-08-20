@@ -3,5 +3,8 @@ window.loadBooks([
   "books/xiao-huo-long/book.js",
   "books/wo-niu-kuai-di/book.js",
   "books/xing-xing-diao-xia-lai/book.js",
-  "books/hai-xiu-bian-se-long/book.js"
+  "books/hai-xiu-bian-se-long/book.js",
+  "books/gui-tu-sai-pao/book.js",
+  "books/wu-ya-he-shui/book.js",
+  "books/xiao-ma-guo-he/book.js"
 ]);

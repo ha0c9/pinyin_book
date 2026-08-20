@@ -181,7 +181,14 @@ def snail(x, y, s=1.0, cap=True, shell_extra="", mood="happy", flip=False):
 
 
 def bunny(x, y, s=1.0, mood="happy", scarf=None, flip=False):
-    face = eye(-11, -6, 5) + eye(11, -6, 5) + (mouth_smile(0, 8, 8) if mood != "sad" else mouth_o(0, 10, 5))
+    if mood == "sleep":
+        face = eye(-11, -6, closed=True) + eye(11, -6, closed=True) + mouth_smile(0, 8, 6)
+    elif mood == "blush":
+        face = (eye(-11, -6, 5) + eye(11, -6, 5) + mouth_smile(0, 8, 8) +
+                '<ellipse cx="-19" cy="3" rx="6" ry="3.5" fill="#f8bbd0"/>'
+                '<ellipse cx="19" cy="3" rx="6" ry="3.5" fill="#f8bbd0"/>')
+    else:
+        face = eye(-11, -6, 5) + eye(11, -6, 5) + (mouth_smile(0, 8, 8) if mood != "sad" else mouth_o(0, 10, 5))
     sc = f'<rect x="-24" y="20" width="48" height="12" rx="6" fill="{scarf}"/>' if scarf else ""
     flip_t = "scale(-1 1)" if flip else ""
     return f'''<g transform="translate({x} {y}) scale({s}) {flip_t}">
@@ -563,6 +570,184 @@ def big_leaf(x, y, s=1.0, color="#66bb6a", angle=0):
     </g>'''
 
 
+def tortoise(x, y, s=1.0, sweat=False, hand_up=False, flip=False):
+    """小乌龟壳壳：棕色圆壳、绿色四肢。"""
+    sw = ('<circle cx="44" cy="-56" r="5" fill="#81d4fa"/>'
+          '<circle cx="58" cy="-42" r="4" fill="#81d4fa"/>') if sweat else ""
+    hand = ('<path d="M-46 16 q -34 -20 -28 -58" stroke="#8bc34a" stroke-width="13" '
+            'fill="none" stroke-linecap="round"/>'
+            '<circle cx="-74" cy="-46" r="9" fill="#8bc34a"/>') if hand_up else ""
+    flip_t = "scale(-1 1)" if flip else ""
+    return f'''<g transform="translate({x} {y}) scale({s}) {flip_t}">
+      <ellipse cx="0" cy="34" rx="66" ry="10" fill="rgba(0,0,0,0.10)"/>
+      <ellipse cx="-38" cy="26" rx="12" ry="9" fill="#8bc34a"/>
+      <ellipse cx="26" cy="28" rx="12" ry="9" fill="#8bc34a"/>
+      <path d="M-58 22 Q -60 -34 -6 -36 Q 50 -34 52 22 Z" fill="#a1783f"/>
+      <path d="M-40 8 Q -40 -20 -6 -22 Q 30 -20 32 8" stroke="#7d5a2a" stroke-width="5" fill="none"/>
+      <line x1="-6" y1="-36" x2="-6" y2="22" stroke="#7d5a2a" stroke-width="5"/>
+      <rect x="-62" y="18" width="122" height="12" rx="6" fill="#7d5a2a"/>
+      <circle cx="58" cy="-8" r="22" fill="#8bc34a"/>
+      {eye(52, -14, 4.6)}{eye(68, -14, 4.6)}{mouth_smile(60, -2, 7)}
+      {hand}{sw}
+    </g>'''
+
+
+def zzz(x, y, s=1.0, color="#8fa3c8"):
+    z = ('<path d="M0 0 L 16 0 L 0 16 L 16 16" stroke="{c}" stroke-width="5" '
+         'fill="none" stroke-linecap="round" stroke-linejoin="round"/>').format(c=color)
+    return (f'<g transform="translate({x} {y}) scale({s})">{z}</g>'
+            f'<g transform="translate({x + 26} {y - 26}) scale({s * 0.7})">{z}</g>'
+            f'<g transform="translate({x + 46} {y - 46}) scale({s * 0.5})">{z}</g>')
+
+
+def finish_flag(x, y, s=1.0):
+    cells = "".join(f'<rect x="{cx}" y="{cy}" width="11" height="11" fill="#4a3b2a"/>'
+                    for cx in range(0, 44, 22) for cy in range(-72, -28, 22))
+    cells += "".join(f'<rect x="{cx}" y="{cy}" width="11" height="11" fill="#4a3b2a"/>'
+                     for cx in range(11, 44, 22) for cy in range(-61, -28, 22))
+    return f'''<g transform="translate({x} {y}) scale({s})">
+      <line x1="0" y1="10" x2="0" y2="-76" stroke="#8d6e63" stroke-width="7" stroke-linecap="round"/>
+      <rect x="0" y="-72" width="44" height="44" fill="#fff"/>
+      {cells}
+      <rect x="0" y="-72" width="44" height="44" fill="none" stroke="#4a3b2a" stroke-width="3"/>
+    </g>'''
+
+
+def stump(x, y, s=1.0):
+    return f'''<g transform="translate({x} {y}) scale({s})">
+      <rect x="-34" y="-26" width="68" height="34" rx="8" fill="#a9743f"/>
+      <ellipse cx="0" cy="-26" rx="34" ry="12" fill="#d7a86e"/>
+      <ellipse cx="0" cy="-26" rx="20" ry="7" fill="none" stroke="#b98c53" stroke-width="4"/>
+    </g>'''
+
+
+def crow(x, y, s=1.0, flying=False, mood="happy", flip=False):
+    """小乌鸦阿黑：黑蓝色圆身体、橙色嘴。"""
+    if flying:
+        wings = ('<path d="M-24 -8 q -46 -30 -50 -62 q 40 12 54 44 Z" fill="#263238"/>'
+                 '<path d="M20 -4 q 44 -26 48 -58 q -38 12 -52 40 Z" fill="#263238"/>')
+        legs = ""
+    else:
+        wings = '<path d="M-30 4 q -22 6 -30 24 q 26 2 38 -10 Z" fill="#263238"/>'
+        legs = ('<line x1="-10" y1="42" x2="-10" y2="58" stroke="#f5b81d" stroke-width="5" stroke-linecap="round"/>'
+                '<line x1="10" y1="42" x2="10" y2="58" stroke="#f5b81d" stroke-width="5" stroke-linecap="round"/>')
+    face = ('<circle cx="10" cy="-26" r="10" fill="#fff"/><circle cx="12" cy="-26" r="5" fill="#4a3b2a"/>' +
+            ('<path d="M30 -14 l 26 5 l -26 7 Z" fill="#f5b81d"/>' if mood == "happy" else
+             '<path d="M30 -18 l 26 4 l -26 4 Z" fill="#f5b81d"/><path d="M30 -8 l 22 6 l -22 2 Z" fill="#f5b81d"/>'))
+    flip_t = "scale(-1 1)" if flip else ""
+    return f'''<g transform="translate({x} {y}) scale({s}) {flip_t}">
+      <ellipse cx="0" cy="58" rx="40" ry="9" fill="rgba(0,0,0,0.10)"/>
+      <path d="M-34 26 q -18 4 -26 16 q 20 4 32 -4 Z" fill="#263238"/>
+      <ellipse cx="0" cy="10" rx="36" ry="34" fill="#37474f"/>
+      <ellipse cx="4" cy="20" rx="20" ry="18" fill="#546e7a"/>
+      <circle cx="8" cy="-22" r="26" fill="#37474f"/>
+      {face}{wings}{legs}
+    </g>'''
+
+
+def bottle(x, y, s=1.0, water=0.4, pebbles=0, tilt=0):
+    """细口瓶：water 为水位 0~1，pebbles 为瓶内石子数。"""
+    inner = "M-26 -18 L -26 88 Q -26 100 -14 100 L 14 100 Q 26 100 26 88 L 26 -18 L 12 -30 L 12 -52 L -12 -52 L -12 -30 Z"
+    wl = 100 - int(water * 118)
+    stones = "".join(f'<ellipse cx="{sx}" cy="{sy}" rx="8" ry="6" fill="#90a4ae" stroke="#78909c" stroke-width="2"/>'
+                     for i, (sx, sy) in enumerate(
+                         [(-12, 92), (4, 94), (14, 88), (-4, 84), (10, 76), (-14, 78),
+                          (2, 68), (-8, 62), (12, 62), (0, 54)][:pebbles]))
+    return f'''<g transform="translate({x} {y}) scale({s}) rotate({tilt})">
+      <clipPath id="bt{x}{y}"><path d="{inner}"/></clipPath>
+      <path d="{inner}" fill="#e3f2fd" opacity="0.55"/>
+      <g clip-path="url(#bt{x}{y})">
+        <rect x="-26" y="{wl}" width="52" height="{100 - wl + 2}" fill="#64b5f6" opacity="0.85"/>
+        {stones}
+      </g>
+      <path d="{inner}" fill="none" stroke="#90caf9" stroke-width="5"/>
+    </g>'''
+
+
+def pebble(x, y, s=1.0):
+    return (f'<g transform="translate({x} {y}) scale({s})">'
+            f'<ellipse rx="10" ry="7" fill="#b0bec5" stroke="#90a4ae" stroke-width="2"/></g>')
+
+
+def heat_wave(x, y, s=1.0):
+    return f'''<g transform="translate({x} {y}) scale({s})" stroke="#ffb74d" stroke-width="5"
+      fill="none" stroke-linecap="round" opacity="0.7">
+      <path d="M0 0 q 8 -12 0 -24 q -8 -12 0 -24"/>
+      <path d="M22 4 q 8 -12 0 -24 q -8 -12 0 -24"/>
+    </g>'''
+
+
+def horse(x, y, s=1.0, mane="#8d6242", coat="#d7a86e", sack=False, mood="happy", flip=False):
+    """小马乐乐：浅棕色身体、深棕鬃毛。"""
+    if mood == "happy":
+        face = eye(70, -66, 5) + mouth_smile(78, -50, 7)
+    elif mood == "think":
+        face = eye(70, -66, 5) + mouth_o(80, -50, 5)
+    else:  # worried
+        face = eye(70, -66, 5) + mouth_o(80, -48, 6)
+    bag = ('<path d="M-30 -56 Q -30 -84 0 -84 Q 30 -84 30 -56 L 24 -34 L -24 -34 Z" fill="#e8cf9e" stroke="#c9a96a" stroke-width="4"/>'
+           '<path d="M-14 -84 q 14 -14 28 0" stroke="#c9a96a" stroke-width="5" fill="none"/>') if sack else ""
+    flip_t = "scale(-1 1)" if flip else ""
+    return f'''<g transform="translate({x} {y}) scale({s}) {flip_t}">
+      <ellipse cx="0" cy="64" rx="70" ry="10" fill="rgba(0,0,0,0.10)"/>
+      <path d="M-64 -10 q -20 26 -6 48" stroke="{mane}" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <rect x="-58" y="-40" width="116" height="66" rx="30" fill="{coat}"/>
+      <rect x="-46" y="10" width="14" height="52" rx="7" fill="{coat}"/>
+      <rect x="32" y="10" width="14" height="52" rx="7" fill="{coat}"/>
+      <rect x="-46" y="54" width="14" height="10" rx="4" fill="{mane}"/>
+      <rect x="32" y="54" width="14" height="10" rx="4" fill="{mane}"/>
+      <path d="M34 -30 Q 40 -78 66 -84 L 82 -84 Q 96 -80 94 -60 Q 92 -44 76 -40 Z" fill="{coat}"/>
+      <path d="M40 -34 Q 44 -86 60 -92 Q 52 -60 56 -36 Z" fill="{mane}"/>
+      <path d="M58 -88 l 4 -16 l 10 12 Z" fill="{coat}"/>
+      <path d="M74 -88 l 8 -14 l 6 14 Z" fill="{coat}"/>
+      <ellipse cx="88" cy="-56" rx="12" ry="10" fill="#efd9b4"/>
+      <circle cx="90" cy="-58" r="2.6" fill="#4a3b2a"/>
+      {face}{bag}
+    </g>'''
+
+
+def cow(x, y, s=1.0, flip=False):
+    """老牛伯伯：白底黑斑、一对牛角。"""
+    flip_t = "scale(-1 1)" if flip else ""
+    return f'''<g transform="translate({x} {y}) scale({s}) {flip_t}">
+      <ellipse cx="0" cy="66" rx="76" ry="10" fill="rgba(0,0,0,0.10)"/>
+      <path d="M-70 -6 q -18 22 -4 42" stroke="#8d6e63" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <rect x="-64" y="-40" width="128" height="70" rx="32" fill="#f5f0e6"/>
+      <path d="M-40 -36 q 22 -10 34 6 q -6 20 -30 16 q -16 -6 -4 -22 Z" fill="#5d554c"/>
+      <path d="M10 6 q 18 -8 28 4 q -4 16 -22 12 q -12 -4 -6 -16 Z" fill="#5d554c"/>
+      <rect x="-50" y="14" width="15" height="52" rx="7" fill="#f5f0e6"/>
+      <rect x="34" y="14" width="15" height="52" rx="7" fill="#f5f0e6"/>
+      <rect x="-50" y="58" width="15" height="10" rx="4" fill="#5d554c"/>
+      <rect x="34" y="58" width="15" height="10" rx="4" fill="#5d554c"/>
+      <circle cx="74" cy="-46" r="30" fill="#f5f0e6"/>
+      <path d="M52 -70 q -14 -16 -4 -30 q 12 8 14 24 Z" fill="#c9a96a"/>
+      <path d="M96 -70 q 14 -16 4 -30 q -12 8 -14 24 Z" fill="#c9a96a"/>
+      <ellipse cx="80" cy="-30" rx="17" ry="12" fill="#f3c5ba"/>
+      <circle cx="74" cy="-32" r="2.6" fill="#4a3b2a"/><circle cx="88" cy="-32" r="2.6" fill="#4a3b2a"/>
+      {eye(62, -54, 4.6)}{eye(84, -54, 4.6)}
+    </g>'''
+
+
+def river(y=470, h=90):
+    waves = "".join(f'<path d="M{x0} {y + 24 + (i % 2) * 26} q 16 -9 32 0 q 16 9 32 0" '
+                    f'stroke="#e3f2fd" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.8"/>'
+                    for i, x0 in enumerate(range(30, W - 60, 130)))
+    return (f'<rect x="0" y="{y}" width="{W}" height="{h}" fill="#7db8e8"/>{waves}')
+
+
+def mill(x, y, s=1.0):
+    spokes = "".join(f'<line x1="0" y1="0" x2="0" y2="-52" stroke="#8d6242" stroke-width="7" '
+                     f'transform="rotate({a})" stroke-linecap="round"/>' for a in range(0, 360, 45))
+    return f'''<g transform="translate({x} {y}) scale({s})">
+      {house(0, 0, 1.0)}
+      <g transform="translate(-124 44)">
+        <circle r="56" fill="none" stroke="#a9743f" stroke-width="10"/>
+        {spokes}
+        <circle r="10" fill="#8d6242"/>
+      </g>
+    </g>'''
+
+
 def stage(x, y, s=1.0):
     return f'''<g transform="translate({x} {y}) scale({s})">
       <rect x="-190" y="30" width="380" height="46" rx="10" fill="#a9743f"/>
@@ -914,9 +1099,239 @@ def book4(out: Path):
     write_pages(out, pages, cover_of="p5")
 
 
+# ---------- 故事五：龟兔赛跑 ----------
+
+def book5(out: Path):
+    pages = {}
+    meadow = (sky("#bde3ff", "#eaf7ff"), ground(), hill(430, "#8fce91"))
+    road = ('<path d="M-20 560 Q 260 500 420 530 Q 600 560 820 500" stroke="#e8d5ae" '
+            'stroke-width="64" fill="none" stroke-linecap="round"/>')
+    # p1 白白夸下海口
+    pages["p1"] = svg(
+        *meadow, sun(690, 85, 42), cloud(180, 100),
+        finish_flag(90, 480, 1.1),
+        stump(400, 500, 1.1),
+        bunny(400, 420, 1.1),
+        '<g stroke="#f4823c" stroke-width="5" stroke-linecap="round">'
+        '<line x1="452" y1="330" x2="464" y2="310"/><line x1="472" y1="344" x2="490" y2="330"/>'
+        '<line x1="482" y1="366" x2="504" y2="362"/></g>',
+        bear(620, 440, 0.9), squirrel(720, 490, 0.85), monkey(160, 470, 0.85),
+        )
+    # p2 壳壳报名
+    pages["p2"] = svg(
+        *meadow, cloud(560, 110, 0.9), sun(110, 85, 38),
+        tortoise(340, 480, 1.2, hand_up=True),
+        bunny(560, 440, 1.0), bear(680, 430, 0.85), squirrel(180, 500, 0.9),
+        flower_dot(120, 570), flower_dot(720, 565, "#ce93d8"),
+        )
+    # p3 比赛开始
+    pages["p3"] = svg(
+        *meadow, sun(690, 85, 42), cloud(300, 100, 0.8),
+        road,
+        finish_flag(70, 470, 1.0),
+        tortoise(180, 520, 0.95),
+        bunny(600, 470, 1.05, flip=True),
+        '<g stroke="#b0bec5" stroke-width="6" stroke-linecap="round" opacity="0.8">'
+        '<line x1="480" y1="430" x2="430" y2="430"/><line x1="490" y1="455" x2="432" y2="455"/>'
+        '<line x1="480" y1="480" x2="440" y2="480"/></g>',
+        )
+    # p4 白白睡大觉
+    pages["p4"] = svg(
+        *meadow, sun(110, 85, 40), cloud(600, 110, 1.0),
+        tree(560, 470, 1.6),
+        bunny(430, 500, 1.05, mood="sleep"),
+        zzz(310, 420, 1.1),
+        grass_tuft(150, 570, 1.1), flower_dot(220, 560),
+        )
+    # p5 壳壳坚持爬
+    pages["p5"] = svg(
+        *meadow, sun(680, 80, 48), heat_wave(600, 200, 1.0), heat_wave(180, 180, 0.9),
+        road,
+        tree(660, 460, 1.1),
+        bunny(600, 510, 0.65, mood="sleep"), zzz(530, 450, 0.7),
+        tortoise(300, 520, 1.15, sweat=True),
+        )
+    # p6 白白狂追
+    pages["p6"] = svg(
+        sky("#f7b267", "#ffe3c9"), sun(690, 90, 44, "#ff8f5e"),
+        ground("#94b58a", 430), hill(450, "#86a97c", 80),
+        road,
+        bunny(430, 480, 1.15, flip=True),
+        '<g stroke="#c9b29a" stroke-width="6" stroke-linecap="round" opacity="0.9">'
+        '<line x1="320" y1="430" x2="260" y2="430"/><line x1="330" y1="458" x2="255" y2="458"/>'
+        '<line x1="320" y1="486" x2="268" y2="486"/></g>',
+        )
+    # p7 壳壳夺冠
+    pages["p7"] = svg(
+        sky("#ffe9c9", "#fff7e8"), confetti(seed=23),
+        ground("#a5d6a7", 430),
+        finish_flag(400, 500, 1.4),
+        tortoise(300, 510, 1.2),
+        bear(140, 440, 0.95), squirrel(560, 500, 0.9), monkey(660, 470, 0.9),
+        bunny(740, 520, 0.6, flip=True),
+        heart(240, 250, 1.1), sparkle(480, 220, 1.0, "#ffd54f"),
+        )
+    # p8 白白道歉
+    pages["p8"] = svg(
+        *meadow, sun(110, 85, 40), cloud(620, 100, 0.9),
+        bunny(330, 450, 1.1, mood="blush"),
+        tortoise(520, 500, 1.1, flip=True),
+        heart(430, 260, 1.3), heart(330, 210, 0.9, "#ce93d8"),
+        flower_dot(130, 565), flower_dot(700, 560, "#ffd54f"),
+        )
+    write_pages(out, pages, cover_of="p7")
+
+
+# ---------- 故事六：乌鸦喝水 ----------
+
+def book6(out: Path):
+    pages = {}
+    dry = (sky("#ffdf9e", "#fff3d6"), ground("#d9c07f", 440), hill(460, "#cbb271", 70))
+    # p1 又渴又累地飞
+    pages["p1"] = svg(
+        *dry, sun(660, 100, 52, "#ff9f43"),
+        heat_wave(200, 240, 1.1), heat_wave(500, 200, 1.0), heat_wave(340, 320, 0.9),
+        crow(340, 200, 1.1, flying=True, mood="thirsty"),
+        tree(110, 490, 0.9, "#c8b46a"), grass_tuft(600, 570, 1.0),
+        )
+    # p2 发现半瓶水
+    pages["p2"] = svg(
+        *dry, sun(680, 90, 44, "#ff9f43"), cloud(170, 110, 0.8),
+        bottle(490, 400, 1.2, water=0.4),
+        crow(300, 460, 1.15, mood="thirsty"),
+        grass_tuft(680, 575, 1.0),
+        )
+    # p3 推瓶子差点洒了
+    pages["p3"] = svg(
+        *dry, sun(680, 90, 44, "#ff9f43"),
+        bottle(500, 410, 1.15, water=0.4, tilt=-18),
+        crow(330, 450, 1.15, mood="thirsty", flip=True),
+        '<g stroke="#e05e4e" stroke-width="6" stroke-linecap="round">'
+        '<line x1="590" y1="270" x2="590" y2="300"/><circle cx="590" cy="322" r="4" fill="#e05e4e"/></g>',
+        )
+    # p4 发现小石子
+    pages["p4"] = svg(
+        *dry, sun(680, 90, 44, "#ff9f43"), cloud(200, 100, 0.8),
+        crow(300, 440, 1.15),
+        sparkle(370, 300, 1.2, "#ffb300"),
+        pebble(480, 560, 1.3), pebble(540, 540, 1.1), pebble(600, 570, 1.4),
+        pebble(660, 545, 1.0), pebble(430, 585, 1.1), pebble(710, 580, 1.2),
+        bottle(660, 415, 1.0, water=0.4),
+        )
+    # p5 扑通！放石子
+    pages["p5"] = svg(
+        *dry, sun(120, 90, 40, "#ff9f43"),
+        bottle(480, 410, 1.25, water=0.45, pebbles=3),
+        crow(330, 300, 1.05, flying=True),
+        pebble(455, 330, 1.0),
+        '<path d="M462 350 L 470 380" stroke="#90a4ae" stroke-width="4" '
+        'stroke-dasharray="3 8" stroke-linecap="round"/>',
+        pebble(600, 565, 1.1), pebble(660, 585, 1.0),
+        )
+    # p6 水升到瓶口
+    pages["p6"] = svg(
+        *dry, sun(120, 90, 40, "#ff9f43"), cloud(600, 110, 0.8),
+        bottle(480, 410, 1.25, water=0.92, pebbles=9),
+        crow(300, 450, 1.15),
+        sparkle(560, 300, 1.0, "#81d4fa"),
+        )
+    # p7 喝到水啦
+    pages["p7"] = svg(
+        sky("#bde3ff", "#eaf7ff"), sun(680, 90, 42), cloud(180, 110, 0.9),
+        ground("#d9c07f", 440), hill(460, "#cbb271", 70),
+        bottle(460, 410, 1.25, water=0.86, pebbles=9),
+        crow(360, 330, 1.1, flip=True),
+        '<circle cx="470" cy="330" r="5" fill="#64b5f6"/><circle cx="492" cy="310" r="4" fill="#64b5f6"/>',
+        heart(600, 250, 1.2), sparkle(250, 240, 0.9, "#ffd54f"),
+        )
+    write_pages(out, pages, cover_of="p7")
+
+
+# ---------- 故事七：小马过河 ----------
+
+def book7(out: Path):
+    pages = {}
+    meadow = (sky("#bde3ff", "#eaf7ff"), ground(), hill(430, "#8fce91"))
+    # p1 妈妈交给乐乐任务
+    pages["p1"] = svg(
+        *meadow, sun(690, 85, 42), cloud(200, 100),
+        house(150, 340, 0.9),
+        horse(560, 470, 1.15, sack=True),
+        horse(330, 450, 0.95, coat="#c9915c", mane="#7d5a2a", flip=True),
+        flower_dot(700, 560), grass_tuft(80, 575, 1.0),
+        )
+    # p2 河边犹豫
+    pages["p2"] = svg(
+        *meadow, cloud(560, 100, 1.0), sun(110, 85, 38),
+        river(),
+        horse(280, 400, 1.2, sack=True, mood="think"),
+        '<path d="M400 250 q 26 -30 0 -52 q -20 -18 2 -34" stroke="#8fa3c8" stroke-width="6" '
+        'fill="none" stroke-linecap="round"/><circle cx="402" cy="272" r="5" fill="#8fa3c8"/>',
+        tree(700, 460, 0.9),
+        )
+    # p3 老牛说水浅
+    pages["p3"] = svg(
+        *meadow, sun(690, 85, 40), cloud(300, 100, 0.8),
+        river(),
+        cow(560, 380, 1.15, flip=True),
+        horse(220, 400, 1.05, sack=True, mood="think"),
+        grass_tuft(660, 440, 0.9),
+        )
+    # p4 松鼠说水深
+    pages["p4"] = svg(
+        *meadow, cloud(180, 100, 0.9), sun(690, 85, 38),
+        river(),
+        tree(620, 400, 1.5),
+        squirrel(600, 300, 1.1, flip=True),
+        '<g stroke="#e05e4e" stroke-width="5" stroke-linecap="round">'
+        '<line x1="540" y1="250" x2="528" y2="232"/><line x1="558" y1="240" x2="552" y2="218"/></g>',
+        horse(260, 400, 1.1, sack=True, mood="worried"),
+        )
+    # p5 到底听谁的？
+    pages["p5"] = svg(
+        *meadow, cloud(400, 90, 1.0),
+        horse(400, 440, 1.2, sack=True, mood="worried"),
+        '<path d="M400 260 a 30 30 0 1 1 30 30" stroke="#8fa3c8" stroke-width="7" '
+        'fill="none" stroke-linecap="round"/><circle cx="436" cy="312" r="5" fill="#8fa3c8"/>',
+        cow(120, 500, 0.7, flip=True), squirrel(700, 500, 0.85),
+        )
+    # p6 妈妈的话
+    pages["p6"] = svg(
+        *meadow, sun(110, 85, 40), cloud(620, 100, 0.9),
+        house(660, 350, 0.9),
+        horse(250, 450, 1.0, coat="#c9915c", mane="#7d5a2a"),
+        horse(520, 470, 1.1, sack=True, flip=True),
+        heart(390, 260, 1.1),
+        flower_dot(120, 570), flower_dot(720, 575, "#ce93d8"),
+        )
+    # p7 自己试一试
+    pages["p7"] = svg(
+        *meadow, sun(690, 85, 42), cloud(200, 100, 0.9),
+        river(440, 120),
+        horse(400, 400, 1.2, sack=True),
+        '<path d="M310 480 q 14 -12 28 0 M460 490 q 14 -12 28 0" stroke="#e3f2fd" '
+        'stroke-width="5" fill="none" stroke-linecap="round"/>',
+        sparkle(250, 250, 0.9, "#ffd54f"),
+        )
+    # p8 到达磨坊
+    pages["p8"] = svg(
+        sky("#ffe9c9", "#fff7e8"), sun(120, 90, 44),
+        ground("#a5d6a7", 430),
+        mill(560, 350, 1.0),
+        horse(260, 470, 1.15, mood="happy"),
+        '<path d="M420 520 Q 420 496 448 496 Q 476 496 476 520 L 470 544 L 426 544 Z" '
+        'fill="#e8cf9e" stroke="#c9a96a" stroke-width="4"/>',
+        heart(360, 260, 1.2), flower_dot(120, 565),
+        )
+    write_pages(out, pages, cover_of="p7")
+
+
 if __name__ == "__main__":
     root = Path(__file__).resolve().parent.parent
     book1(root / "books" / "xiao-huo-long" / "images")
     book2(root / "books" / "wo-niu-kuai-di" / "images")
     book3(root / "books" / "xing-xing-diao-xia-lai" / "images")
     book4(root / "books" / "hai-xiu-bian-se-long" / "images")
+    book5(root / "books" / "gui-tu-sai-pao" / "images")
+    book6(root / "books" / "wu-ya-he-shui" / "images")
+    book7(root / "books" / "xiao-ma-guo-he" / "images")
