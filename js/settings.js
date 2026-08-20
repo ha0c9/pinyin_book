@@ -4,8 +4,7 @@
 
   var DEFAULTS = {
     pinyinDuration: 5000, // 拼音气泡停留毫秒数，0 = 不自动消失
-    fontSize: "large",    // large | xlarge
-    allPinyin: "off"      // on | off，整页拼音辅助模式
+    fontSize: "large"     // large | xlarge
   };
 
   function load() {
@@ -27,7 +26,6 @@
 
   function apply() {
     document.body.dataset.fontsize = settings.fontSize;
-    document.body.dataset.allpinyin = settings.allPinyin;
     listeners.forEach(function (fn) { fn(settings); });
   }
 
@@ -66,7 +64,6 @@
 
     bindGroup("duration-options", "pinyinDuration", function (v) { return parseInt(v, 10); });
     bindGroup("fontsize-options", "fontSize", null);
-    bindGroup("allpinyin-options", "allPinyin", null);
 
     function open() { overlay.classList.remove("hidden"); }
     function close() { overlay.classList.add("hidden"); }

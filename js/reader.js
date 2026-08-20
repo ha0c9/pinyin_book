@@ -42,6 +42,7 @@
     if (duration > 0) {
       var fade = setTimeout(function () {
         bubble.classList.add("fading");
+        charEl.classList.remove("active"); // 底色与气泡同步淡出
       }, duration);
       var hide = setTimeout(function () {
         removeBubble(charEl);
@@ -60,7 +61,6 @@
     container.appendChild(inner);
     var chars = Array.from(page.text);
     var pinyins = page.pinyin || [];
-    var allPinyin = window.AppSettings.get().allPinyin === "on";
 
     chars.forEach(function (ch, i) {
       var py = pinyins[i] || "";
@@ -70,20 +70,13 @@
         node = document.createElement("span");
         node.className = "char punct";
         node.textContent = ch;
-      } else if (allPinyin) {
-        node = document.createElement("ruby");
-        node.className = "char";
-        node.appendChild(document.createTextNode(ch));
-        var rt = document.createElement("rt");
-        rt.textContent = py;
-        node.appendChild(rt);
       } else {
         node = document.createElement("span");
         node.className = "char";
         node.textContent = ch;
         // 点击切换：已显示拼音时再点一下立即消失（与淡出时间设置无关）
         node.addEventListener("click", function () {
-          if (node.classList.contains("active")) {
+          if (node.classList.contains("active") || node.querySelector(".pinyin-bubble")) {
             removeBubble(node);
           } else {
             showBubble(node, py);
@@ -111,6 +104,7 @@
     el.pageIndicator.textContent = "第 " + (currentPage + 1) + " / " + currentBook.pages.length + " 页";
     el.prevBtn.disabled = currentPage === 0;
     el.nextBtn.disabled = currentPage === currentBook.pages.length - 1;
+    if (el.firstPageBtn) el.firstPageBtn.disabled = currentPage === 0;
     saveProgress();
   }
 
@@ -119,6 +113,12 @@
     var next = currentPage + delta;
     if (next < 0 || next >= currentBook.pages.length) return;
     currentPage = next;
+    renderPage();
+  }
+
+  function gotoFirst() {
+    if (!currentBook || currentPage === 0) return;
+    currentPage = 0;
     renderPage();
   }
 
@@ -144,9 +144,11 @@
     el.bookTitle = $("book-title");
     el.prevBtn = $("prev-btn");
     el.nextBtn = $("next-btn");
+    el.firstPageBtn = $("first-page-btn");
 
     el.prevBtn.addEventListener("click", function () { goto(-1); });
     el.nextBtn.addEventListener("click", function () { goto(1); });
+    el.firstPageBtn.addEventListener("click", gotoFirst);
 
     document.addEventListener("keydown", function (e) {
       if (!currentBook) return;
@@ -167,7 +169,7 @@
       touchStartX = null;
     }, { passive: true });
 
-    /* 整页拼音开关变化时重新渲染当前页 */
+    /* 设置变化时重新渲染当前页（例如字号） */
     window.AppSettings.onChange(function () {
       if (currentBook) renderPage();
     });
