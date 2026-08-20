@@ -357,6 +357,223 @@ def svg(*parts):
             f'font-family="sans-serif">' + "".join(parts) + "</svg>")
 
 
+# ---------- 夜空与发光元素 ----------
+
+def night_sky(c1="#1a2456", c2="#3b4a8c"):
+    return f'''<defs><linearGradient id="nsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="{c1}"/><stop offset="1" stop-color="{c2}"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff3b0" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#fff3b0" stop-opacity="0"/>
+    </radialGradient></defs>
+    <rect width="{W}" height="{H}" fill="url(#nsky)"/>'''
+
+
+def tiny_stars(n=36, seed=5, ymax=420):
+    out, v = [], seed
+    for i in range(n):
+        v = (v * 48271) % 2147483647; x = v % W
+        v = (v * 48271) % 2147483647; y = v % ymax
+        v = (v * 48271) % 2147483647; r = 1.5 + (v % 20) / 10
+        v = (v * 48271) % 2147483647; op = 0.4 + (v % 6) / 10
+        out.append(f'<circle cx="{x}" cy="{y}" r="{r:.1f}" fill="#fdf6c9" opacity="{op:.1f}"/>')
+    return "".join(out)
+
+
+def moon(x=680, y=100, r=44):
+    return f'''<circle cx="{x}" cy="{y}" r="{r + 26}" fill="url(#glow)"/>
+      <circle cx="{x}" cy="{y}" r="{r}" fill="#fff3b0"/>
+      <circle cx="{x - 14}" cy="{y - 8}" r="8" fill="#f5e69a"/>
+      <circle cx="{x + 10}" cy="{y + 14}" r="6" fill="#f5e69a"/>'''
+
+
+def _star_path(ro, ri):
+    import math
+    pts = []
+    for i in range(10):
+        r = ro if i % 2 == 0 else ri
+        a = -math.pi / 2 + i * math.pi / 5
+        pts.append(f"{r * math.cos(a):.1f} {r * math.sin(a):.1f}")
+    return "M" + " L".join(pts) + " Z"
+
+
+def star_char(x, y, s=1.0, mood="happy", glow=True):
+    """小星星角色：五角星 + 表情 + 光晕。"""
+    g = f'<circle r="86" fill="url(#glow)"/>' if glow else ""
+    if mood == "happy":
+        face = eye(-13, -2, 5) + eye(13, -2, 5) + mouth_smile(0, 12, 9)
+    elif mood == "sad":
+        face = (eye(-13, -2, 5) + eye(13, -2, 5) + mouth_o(0, 16, 5) +
+                '<circle cx="-22" cy="10" r="4" fill="#9ad0f5"/><circle cx="24" cy="12" r="4" fill="#9ad0f5"/>')
+    else:  # wink 眨眼
+        face = eye(-13, -2, 5) + eye(13, -2, closed=True) + mouth_smile(0, 12, 9)
+    return f'''<g transform="translate({x} {y}) scale({s})">{g}
+      <path d="{_star_path(56, 24)}" fill="#ffd54f" stroke="#f5b81d" stroke-width="3"/>
+      {face}
+    </g>'''
+
+
+def sparkle(x, y, s=1.0, color="#fff3b0"):
+    return f'''<g transform="translate({x} {y}) scale({s})" fill="{color}">
+      <path d="M0 -14 L 3 -3 L 14 0 L 3 3 L 0 14 L -3 3 L -14 0 L -3 -3 Z"/>
+    </g>'''
+
+
+def firefly(x, y, s=1.0):
+    return f'''<g transform="translate({x} {y}) scale({s})">
+      <circle r="16" fill="url(#glow)"/>
+      <ellipse cx="0" cy="0" rx="6" ry="8" fill="#ffe082"/>
+      <circle cx="0" cy="-9" r="4.5" fill="#6d5b3a"/>
+      <ellipse cx="-6" cy="-6" rx="6" ry="3" fill="#fffde7" opacity="0.85" transform="rotate(-30 -6 -6)"/>
+      <ellipse cx="6" cy="-6" rx="6" ry="3" fill="#fffde7" opacity="0.85" transform="rotate(30 6 -6)"/>
+    </g>'''
+
+
+def night_tree(x, y, s=1.0):
+    return tree(x, y, s, leaf="#2f4d6b")
+
+
+def fox(x, y, s=1.0, mood="happy", arms_up=False, flip=False):
+    """小狐狸阿橙：橘色、白肚皮、尖耳朵、白尖大尾巴。"""
+    if mood == "happy":
+        face = eye(-16, -20, 6) + eye(16, -20, 6) + mouth_smile(0, 0, 10)
+    elif mood == "think":
+        face = eye(-16, -20, 6) + eye(16, -20, 6) + mouth_o(0, 2, 6)
+    else:
+        face = eye(-16, -20, closed=True) + eye(16, -20, closed=True) + mouth_smile(0, 0, 10)
+    arms = ('<path d="M-34 22 q -18 -26 -8 -48" stroke="#f4823c" stroke-width="14" fill="none" stroke-linecap="round"/>'
+            '<path d="M34 22 q 18 -26 8 -48" stroke="#f4823c" stroke-width="14" fill="none" stroke-linecap="round"/>') if arms_up else ""
+    flip_t = "scale(-1 1)" if flip else ""
+    return f'''<g transform="translate({x} {y}) scale({s}) {flip_t}">
+      <ellipse cx="0" cy="86" rx="52" ry="12" fill="rgba(0,0,0,0.15)"/>
+      <path d="M40 62 q 52 14 64 -26 q 6 -18 -8 -28 q 2 26 -20 34 q -18 8 -36 4 Z" fill="#f4823c"/>
+      <path d="M92 22 q 8 -14 4 -14 q -12 2 -18 12 Z" fill="#fff"/>
+      <ellipse cx="0" cy="44" rx="44" ry="44" fill="#f4823c"/>
+      <ellipse cx="0" cy="56" rx="26" ry="30" fill="#fff8ef"/>
+      <ellipse cx="-22" cy="86" rx="13" ry="9" fill="#e26f2e"/>
+      <ellipse cx="22" cy="86" rx="13" ry="9" fill="#e26f2e"/>
+      {arms}
+      <path d="M-36 -44 l -12 -30 l 30 14 Z" fill="#f4823c"/>
+      <path d="M36 -44 l 12 -30 l -30 14 Z" fill="#f4823c"/>
+      <path d="M-38 -48 l -6 -16 l 16 8 Z" fill="#fff"/>
+      <path d="M38 -48 l 6 -16 l -16 8 Z" fill="#fff"/>
+      <circle cx="0" cy="-16" r="42" fill="#f4823c"/>
+      <path d="M-42 -8 q 20 22 42 22 q 22 0 42 -22 q -18 34 -42 34 q -24 0 -42 -34 Z" fill="#fff8ef"/>
+      <ellipse cx="0" cy="4" rx="7" ry="5" fill="#4a3b2a"/>
+      {face}
+    </g>'''
+
+
+def owl(x, y, s=1.0, flying=False, tired=False):
+    wings = ('<path d="M-40 -6 q -42 -18 -52 -50 q 34 6 52 26 Z" fill="#7e6651"/>'
+             '<path d="M40 -6 q 42 -18 52 -50 q -34 6 -52 26 Z" fill="#7e6651"/>') if flying else \
+            ('<ellipse cx="-36" cy="14" rx="12" ry="26" fill="#7e6651"/>'
+             '<ellipse cx="36" cy="14" rx="12" ry="26" fill="#7e6651"/>')
+    sweat = '<circle cx="46" cy="-40" r="5" fill="#9ad0f5"/><circle cx="56" cy="-26" r="4" fill="#9ad0f5"/>' if tired else ""
+    eyes = (eye(-16, -18, closed=True) + eye(16, -18, closed=True)) if tired else \
+        ('<circle cx="-16" cy="-18" r="13" fill="#fff8ef"/><circle cx="16" cy="-18" r="13" fill="#fff8ef"/>' +
+         eye(-16, -18, 6) + eye(16, -18, 6))
+    return f'''<g transform="translate({x} {y}) scale({s})">
+      <ellipse cx="0" cy="14" rx="40" ry="44" fill="#96806a"/>
+      <ellipse cx="0" cy="26" rx="24" ry="28" fill="#d9c7ae"/>
+      <path d="M-30 -44 l -10 -18 l 20 8 Z" fill="#96806a"/>
+      <path d="M30 -44 l 10 -18 l -20 8 Z" fill="#96806a"/>
+      <circle cx="0" cy="-16" r="34" fill="#96806a"/>
+      {eyes}
+      <path d="M0 -8 l -7 8 l 14 0 Z" fill="#f5b81d"/>
+      {wings}{sweat}
+    </g>'''
+
+
+def kite(x, y, s=1.0, angle=0, with_star=False, tail=True):
+    st = star_char(0, 0, 0.55, mood="happy", glow=False) if with_star else ""
+    tl = ('<path d="M0 78 q -20 40 6 66 q 22 24 8 52" stroke="#f8bbd0" stroke-width="5" fill="none" stroke-linecap="round"/>'
+          '<path d="M-16 118 l 14 -8 l 2 16 Z" fill="#ffd54f"/>'
+          '<path d="M6 178 l 14 -8 l 2 16 Z" fill="#81d4fa"/>') if tail else ""
+    return f'''<g transform="translate({x} {y}) scale({s}) rotate({angle})">
+      <path d="M0 -78 L 56 0 L 0 78 L -56 0 Z" fill="#ef8ba5"/>
+      <path d="M0 -78 L 56 0 L 0 0 Z" fill="#f9b6c8"/>
+      <path d="M0 0 L 0 78 L -56 0 Z" fill="#e56e8f"/>
+      <line x1="0" y1="-78" x2="0" y2="78" stroke="#c94f72" stroke-width="4"/>
+      <line x1="-56" y1="0" x2="56" y2="0" stroke="#c94f72" stroke-width="4"/>
+      {tl}{st}
+    </g>'''
+
+
+# ---------- 变色龙与花园元素 ----------
+
+def chameleon(x, y, s=1.0, skin="#7cb342", dots=False, gold_edge=False,
+              blush=False, mood="happy", flip=False):
+    """小变色龙奇奇：卷尾巴、大眼睛、背脊小锯齿。"""
+    dot_svg = "".join(f'<circle cx="{dx}" cy="{dy}" r="{r}" fill="#f48fb1" opacity="0.9"/>'
+                      for dx, dy, r in [(-52, 6, 9), (-22, -14, 11), (10, 2, 9), (-36, 26, 8),
+                                        (2, 30, 7), (36, -22, 8), (-4, -30, 7)]) if dots else ""
+    edge = f'<path d="M-84 6 Q -70 -46 -10 -46 L 40 -46" stroke="#ffd54f" stroke-width="6" fill="none" stroke-linecap="round"/>' if gold_edge else ""
+    bl = '<ellipse cx="52" cy="-2" rx="9" ry="5" fill="#f8bbd0"/>' if blush else ""
+    m = mouth_smile(64, -8, 10) if mood == "happy" else mouth_o(64, -6, 6)
+    crest = "".join(f'<path d="M{cx} -44 l 7 -12 l 7 12 Z" fill="{skin}" stroke="#5a8f30" stroke-width="2"/>'
+                    for cx in (-58, -38, -18, 2))
+    return f'''<g transform="translate({x} {y}) scale({s}) {'scale(-1 1)' if flip else ''}">
+      <ellipse cx="-10" cy="52" rx="80" ry="11" fill="rgba(0,0,0,0.10)"/>
+      <path d="M-84 6 Q -70 -46 -10 -46 Q 44 -46 58 -6 Q 62 18 30 30 Q -10 44 -50 34 Q -80 26 -84 6 Z" fill="{skin}"/>
+      <path d="M-78 24 A 26 26 0 1 1 -106 -8 A 15 15 0 1 0 -120 8"
+        fill="none" stroke="{skin}" stroke-width="11" stroke-linecap="round"/>
+      {crest}
+      <ellipse cx="-40" cy="46" rx="10" ry="8" fill="{skin}"/>
+      <ellipse cx="6" cy="48" rx="10" ry="8" fill="{skin}"/>
+      <circle cx="52" cy="-16" r="30" fill="{skin}"/>
+      <circle cx="46" cy="-24" r="13" fill="#fffde7"/>
+      <circle cx="48" cy="-24" r="6.5" fill="#4a3b2a"/>
+      <circle cx="50" cy="-26" r="2.2" fill="#fff"/>
+      {m}{bl}{dot_svg}{edge}
+    </g>'''
+
+
+def bee(x, y, s=1.0, worried=False):
+    marks = ('<g stroke="#90a4ae" stroke-width="4" fill="none" stroke-linecap="round">'
+             '<path d="M-26 -34 q -8 8 -2 16"/><path d="M26 -34 q 8 8 2 16"/></g>') if worried else ""
+    face = eye(-6, -4, 3.4) + eye(6, -4, 3.4) + (mouth_o(0, 5, 4) if worried else mouth_smile(0, 4, 5))
+    return f'''<g transform="translate({x} {y}) scale({s})">
+      <ellipse cx="-9" cy="-16" rx="11" ry="7" fill="#e3f2fd" opacity="0.9" transform="rotate(-28 -9 -16)"/>
+      <ellipse cx="9" cy="-16" rx="11" ry="7" fill="#e3f2fd" opacity="0.9" transform="rotate(28 9 -16)"/>
+      <ellipse cx="0" cy="0" rx="17" ry="14" fill="#ffd54f"/>
+      <path d="M-6 -13 q -2 13 0 26 M6 -13 q 2 13 0 26" stroke="#4a3b2a" stroke-width="5" fill="none"/>
+      <path d="M15 0 l 9 3 l -9 3 Z" fill="#4a3b2a"/>
+      {face}{marks}
+    </g>'''
+
+
+def tulip(x, y, s=1.0, color="#f06292", closed=False):
+    head = (f'<path d="M-16 0 Q -16 -30 0 -34 Q 16 -30 16 0 Q 0 8 -16 0 Z" fill="{color}"/>'
+            f'<path d="M-16 -2 q 8 -10 16 0 q 8 -10 16 2" stroke="{color}" stroke-width="0" fill="none"/>') if closed else \
+        (f'<path d="M-18 0 Q -20 -34 -6 -36 Q 0 -24 0 -14 Q 0 -24 6 -36 Q 20 -34 18 0 Q 0 10 -18 0 Z" fill="{color}"/>')
+    droop = ' transform="rotate(14)"' if closed else ""
+    return f'''<g transform="translate({x} {y}) scale({s})">
+      <path d="M0 44 L 0 0" stroke="#66bb6a" stroke-width="6" stroke-linecap="round"/>
+      <path d="M0 30 q -18 -4 -22 -20 q 18 2 22 20 Z" fill="#81c784"/>
+      <g{droop}>{head}</g>
+    </g>'''
+
+
+def big_leaf(x, y, s=1.0, color="#66bb6a", angle=0):
+    return f'''<g transform="translate({x} {y}) scale({s}) rotate({angle})">
+      <path d="M0 0 Q -60 -30 -40 -110 Q 20 -90 8 -8 Z" fill="{color}"/>
+      <path d="M-8 -12 Q -30 -50 -34 -96" stroke="#4e9a52" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </g>'''
+
+
+def stage(x, y, s=1.0):
+    return f'''<g transform="translate({x} {y}) scale({s})">
+      <rect x="-190" y="30" width="380" height="46" rx="10" fill="#a9743f"/>
+      <rect x="-176" y="-160" width="26" height="196" fill="#c9915c"/>
+      <rect x="150" y="-160" width="26" height="196" fill="#c9915c"/>
+      <path d="M-190 -160 L 190 -160 L 190 -128 Q 95 -100 0 -128 Q -95 -156 -190 -128 Z" fill="#d95f76"/>
+      <path d="M-176 -150 Q -150 -20 -110 22 L -176 22 Z" fill="#e57373"/>
+      <path d="M176 -150 Q 150 -20 110 22 L 176 22 Z" fill="#e57373"/>
+    </g>'''
+
+
 # ---------- 故事一：爱打喷嚏的小火龙 ----------
 
 def book1(out: Path):
@@ -524,7 +741,182 @@ def write_pages(out: Path, pages: dict, cover_of: str):
     print(f"{out}: 已生成 {len(pages)} 页插画 + 封面")
 
 
+# ---------- 故事三：星星掉下来了 ----------
+
+def book3(out: Path):
+    pages = {}
+    night_ground = '<rect x="0" y="440" width="800" height="160" fill="#2c4a3e"/>'
+    night_hill = hill(460, "#35594a", 90)
+    # p1 星星掉进草丛
+    pages["p1"] = svg(
+        night_sky(), tiny_stars(), moon(),
+        night_ground, night_hill,
+        night_tree(90, 480, 1.0), night_tree(710, 500, 0.85),
+        '<g stroke="#fdf6c9" stroke-width="4" stroke-linecap="round" opacity="0.7">'
+        '<line x1="360" y1="330" x2="330" y2="380"/><line x1="440" y1="330" x2="470" y2="380"/>'
+        '<line x1="400" y1="310" x2="400" y2="360"/></g>',
+        grass_tuft(300, 560, 1.2), grass_tuft(520, 570, 1.1),
+        star_char(400, 490, 1.0, mood="sad"),
+        )
+    # p2 阿橙安慰小星星
+    pages["p2"] = svg(
+        night_sky(), tiny_stars(30, 9), moon(120, 90, 38),
+        night_ground, night_hill,
+        night_tree(720, 490, 0.9),
+        star_char(520, 480, 0.95, mood="sad"),
+        fox(280, 440, 1.1, mood="think"),
+        grass_tuft(660, 570, 1.0),
+        )
+    # p3 往天上抛，掉回树梢
+    pages["p3"] = svg(
+        night_sky(), tiny_stars(30, 13), moon(680, 90, 40),
+        night_ground, night_hill,
+        night_tree(560, 470, 1.35),
+        star_char(560, 300, 0.7, mood="sad", glow=True),
+        '<path d="M330 380 Q 450 220 552 268" stroke="#fdf6c9" stroke-width="4" fill="none" '
+        'stroke-linecap="round" stroke-dasharray="2 16" opacity="0.8"/>',
+        fox(280, 450, 1.1, mood="think", arms_up=True),
+        )
+    # p4 猫头鹰累得直喘气
+    pages["p4"] = svg(
+        night_sky(), tiny_stars(34, 17), moon(120, 100, 40),
+        hill(500, "#2c4a3e", 120),
+        night_tree(700, 540, 0.9),
+        cloud(240, 420, 0.8, "#4a5d94", 0.8), cloud(600, 460, 0.7, "#4a5d94", 0.8),
+        owl(430, 260, 1.1, flying=True, tired=True),
+        star_char(430, 350, 0.6, mood="sad", glow=False),
+        )
+    # p5 做风筝
+    pages["p5"] = svg(
+        night_sky(), tiny_stars(28, 21), moon(690, 90, 40),
+        night_ground, night_hill,
+        kite(430, 440, 1.05, angle=8, with_star=True, tail=False),
+        fox(180, 440, 1.05, mood="happy"),
+        bunny(620, 460, 0.9), squirrel(700, 510, 0.85),
+        grass_tuft(120, 575, 1.0),
+        )
+    # p6 风筝带星星上天，萤火虫照亮
+    pages["p6"] = svg(
+        night_sky(), tiny_stars(40, 25), moon(110, 90, 42),
+        cloud(240, 330, 1.0, "#4a5d94", 0.85), cloud(620, 260, 0.8, "#4a5d94", 0.85),
+        hill(510, "#2c4a3e", 110),
+        kite(480, 190, 0.95, angle=12, with_star=True),
+        '<path d="M480 280 Q 420 420 250 500" stroke="#fdf6c9" stroke-width="3" fill="none" '
+        'stroke-dasharray="3 14" opacity="0.6"/>',
+        firefly(340, 380, 1.0), firefly(420, 320, 0.85), firefly(280, 440, 0.9), firefly(520, 380, 0.8),
+        fox(180, 520, 0.9, mood="happy", arms_up=True),
+        )
+    # p7 星星回家，天空亮晶晶
+    pages["p7"] = svg(
+        night_sky("#1a2456", "#2e3d7d"), tiny_stars(46, 29),
+        star_char(400, 210, 1.25, mood="happy"),
+        '<path d="M400 210 m 0 -110 a 110 110 0 1 1 -0.1 0" stroke="#fdf6c9" stroke-width="3" '
+        'fill="none" stroke-dasharray="2 18" opacity="0.6"/>',
+        sparkle(250, 130, 1.1), sparkle(560, 110, 0.9), sparkle(620, 260, 1.2),
+        sparkle(190, 300, 0.9), sparkle(490, 330, 0.7),
+        hill(520, "#2c4a3e", 100),
+        night_tree(120, 560, 0.85), night_tree(680, 570, 0.8),
+        )
+    # p8 最亮的星朝森林眨眼
+    pages["p8"] = svg(
+        night_sky(), tiny_stars(40, 33),
+        star_char(560, 160, 0.95, mood="wink"),
+        sparkle(460, 110, 0.8), sparkle(660, 240, 0.9),
+        night_ground, night_hill,
+        night_tree(120, 480, 1.0), night_tree(700, 500, 0.9),
+        fox(300, 460, 1.05, mood="happy", arms_up=True),
+        bunny(460, 490, 0.85), squirrel(180, 530, 0.8),
+        )
+    write_pages(out, pages, cover_of="p6")
+
+
+# ---------- 故事四：害羞的小变色龙 ----------
+
+def book4(out: Path):
+    pages = {}
+    garden = (ground("#a5d6a7", 430), hill(450, "#8fce91", 80))
+    # p1 一害羞就冒圆点点
+    pages["p1"] = svg(
+        sky("#c8f0d0", "#eefcf1"), sun(680, 90, 42), cloud(180, 110, 0.9),
+        *garden,
+        big_leaf(120, 590, 1.1, "#81c784", 6), big_leaf(700, 600, 1.0, "#66bb6a", -8),
+        tulip(650, 540, 1.2), tulip(90, 555, 1.0, "#ba68c8"),
+        chameleon(400, 470, 1.3, dots=True, blush=True, mood="shy"),
+        )
+    # p2 上台唱歌变成圆点点
+    pages["p2"] = svg(
+        '<rect width="800" height="600" fill="#fdeede"/>',
+        '<rect x="0" y="470" width="800" height="130" fill="#e8c9a0"/>',
+        stage(400, 330, 1.15),
+        chameleon(400, 330, 0.95, dots=True, blush=True, mood="shy"),
+        '<g fill="#4a3b2a" opacity="0.65"><circle cx="330" cy="255" r="3"/>'
+        '<circle cx="345" cy="245" r="3"/><circle cx="360" cy="252" r="3"/>'
+        '<path d="M338 268 q 10 8 20 0" stroke="#4a3b2a" stroke-width="3" fill="none"/></g>',
+        bunny(180, 500, 0.9), monkey(620, 500, 0.9, flip=True), squirrel(300, 530, 0.8),
+        )
+    # p3 变成叶子的绿色躲起来
+    pages["p3"] = svg(
+        sky("#c8f0d0", "#eefcf1"),
+        ground("#94c996", 380),
+        big_leaf(180, 560, 1.7, "#66bb6a", 10), big_leaf(360, 600, 1.9, "#81c784", -4),
+        big_leaf(560, 570, 1.8, "#4e9a52", 14), big_leaf(700, 610, 1.6, "#66bb6a", -12),
+        chameleon(430, 460, 1.15, skin="#66bb6a", mood="happy"),
+        big_leaf(300, 590, 1.6, "#81c784", 22),
+        tulip(90, 520, 1.0, "#ba68c8"),
+        )
+    # p4 雨后花儿合上，蜜蜂着急
+    pages["p4"] = svg(
+        sky("#a9bdd6", "#dbe6f0"),
+        cloud(180, 90, 1.1, "#c3cfdb"), cloud(560, 120, 0.9, "#c3cfdb"),
+        ground("#93bb8f", 430),
+        '<ellipse cx="240" cy="560" rx="70" ry="12" fill="#b9d4ea" opacity="0.8"/>'
+        '<ellipse cx="600" cy="580" rx="55" ry="10" fill="#b9d4ea" opacity="0.8"/>',
+        tulip(180, 520, 1.3, closed=True), tulip(420, 540, 1.2, "#ba68c8", closed=True),
+        tulip(660, 525, 1.25, "#ef6292", closed=True),
+        bee(320, 340, 1.3, worried=True), bee(480, 300, 1.1, worried=True), bee(560, 380, 1.0, worried=True),
+        )
+    # p5 变成最大最红的花
+    pages["p5"] = svg(
+        sky("#bde3ff", "#eaf7ff"), sun(120, 90, 44),
+        *garden,
+        '<path d="M560 600 Q 540 480 560 420 Q 575 380 620 360" stroke="#8d6e63" stroke-width="16" fill="none" stroke-linecap="round"/>',
+        big_leaf(520, 540, 1.3, "#66bb6a", -20),
+        f'<circle cx="620" cy="330" r="110" fill="url(#glow2)"/>'
+        '<defs><radialGradient id="glow2" cx="0.5" cy="0.5" r="0.5">'
+        '<stop offset="0" stop-color="#ffd54f" stop-opacity="0.5"/>'
+        '<stop offset="1" stop-color="#ffd54f" stop-opacity="0"/></radialGradient></defs>',
+        chameleon(620, 340, 1.05, skin="#e53950", gold_edge=True, mood="happy"),
+        sparkle(540, 250, 0.9, "#ffd54f"), sparkle(710, 280, 0.8, "#ffd54f"),
+        tulip(120, 545, 1.1), tulip(230, 560, 1.0, "#ba68c8"),
+        )
+    # p6 蜜蜂们跟着“花”找到花蜜
+    pages["p6"] = svg(
+        sky("#bde3ff", "#eaf7ff"), sun(690, 80, 40),
+        *garden,
+        '<path d="M560 600 Q 540 480 560 420 Q 575 380 620 360" stroke="#8d6e63" stroke-width="16" fill="none" stroke-linecap="round"/>',
+        chameleon(620, 340, 1.0, skin="#e53950", gold_edge=True, mood="happy"),
+        bee(200, 240, 1.15), bee(320, 200, 1.0), bee(440, 250, 1.1),
+        '<path d="M230 260 Q 400 300 560 330" stroke="#90a4ae" stroke-width="3" fill="none" '
+        'stroke-dasharray="2 12" opacity="0.7"/>',
+        big_leaf(180, 580, 1.5, "#66bb6a", 8),
+        tulip(140, 545, 1.2), tulip(260, 560, 1.1, "#ba68c8"), tulip(360, 545, 1.15, "#ef6292"),
+        )
+    # p7 最可爱的圆点点
+    pages["p7"] = svg(
+        sky("#c8f0d0", "#eefcf1"), sun(680, 90, 42),
+        *garden,
+        tulip(110, 545, 1.1), tulip(700, 550, 1.15, "#ba68c8"),
+        chameleon(380, 470, 1.25, dots=True, blush=True, mood="happy"),
+        bee(280, 300, 1.0), bee(520, 270, 0.9),
+        bunny(640, 470, 0.9), squirrel(150, 500, 0.85),
+        heart(400, 200, 1.4), heart(500, 150, 1.0, "#ef9a9a"), heart(300, 160, 0.9, "#ce93d8"),
+        )
+    write_pages(out, pages, cover_of="p5")
+
+
 if __name__ == "__main__":
     root = Path(__file__).resolve().parent.parent
     book1(root / "books" / "xiao-huo-long" / "images")
     book2(root / "books" / "wo-niu-kuai-di" / "images")
+    book3(root / "books" / "xing-xing-diao-xia-lai" / "images")
+    book4(root / "books" / "hai-xiu-bian-se-long" / "images")

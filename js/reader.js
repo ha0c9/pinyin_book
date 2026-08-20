@@ -32,8 +32,6 @@
   }
 
   function showBubble(charEl, pinyin) {
-    removeBubble(charEl); // 再次点击：先清除旧气泡与计时，重新计时
-
     var bubble = document.createElement("span");
     bubble.className = "pinyin-bubble";
     bubble.textContent = pinyin;
@@ -79,7 +77,14 @@
         node = document.createElement("span");
         node.className = "char";
         node.textContent = ch;
-        node.addEventListener("click", function () { showBubble(node, py); });
+        // 点击切换：已显示拼音时再点一下立即消失（与淡出时间设置无关）
+        node.addEventListener("click", function () {
+          if (node.classList.contains("active")) {
+            removeBubble(node);
+          } else {
+            showBubble(node, py);
+          }
+        });
       }
       container.appendChild(node);
     });
