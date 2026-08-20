@@ -54,6 +54,10 @@
   function renderText(page) {
     var container = el.pageText;
     container.innerHTML = "";
+    // 内层容器：避免横屏布局下 .page-text 的 flex 纵向居中把每个字拆成一行
+    var inner = document.createElement("div");
+    inner.className = "text-inner";
+    container.appendChild(inner);
     var chars = Array.from(page.text);
     var pinyins = page.pinyin || [];
     var allPinyin = window.AppSettings.get().allPinyin === "on";
@@ -86,7 +90,7 @@
           }
         });
       }
-      container.appendChild(node);
+      inner.appendChild(node);
     });
   }
 
