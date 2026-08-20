@@ -2,10 +2,10 @@ window.registerBook({
   "id": "xiao-huo-long",
   "title": "爱打喷嚏的小火龙",
   "grade": 2,
-  "cover": "images/cover.svg",
+  "cover": "images/cover.webp",
   "pages": [
     {
-      "image": "images/p1.svg",
+      "image": "images/p1.webp",
       "text": "小火龙嘟嘟有一个大麻烦：只要一打喷嚏，鼻子里就会“呼”地喷出火苗。",
       "pinyin": [
         "xiǎo",
@@ -44,7 +44,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p2.svg",
+      "image": "images/p2.webp",
       "text": "在学校里，嘟嘟一个喷嚏，把小兔的作业本烧出了一个大洞。大家吓得躲得远远的。",
       "pinyin": [
         "zài",
@@ -87,7 +87,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p3.svg",
+      "image": "images/p3.webp",
       "text": "嘟嘟很难过。他跑到山顶上，天天对着白云练习憋喷嚏。可是一朵蒲公英飞过来，“阿嚏！”又失败了。",
       "pinyin": [
         "dū",
@@ -139,7 +139,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p4.svg",
+      "image": "images/p4.webp",
       "text": "冬天来了，森林里下起了大雪。小动物们冷得直发抖，火柴受了潮，怎么也点不着。",
       "pinyin": [
         "dōng",
@@ -182,7 +182,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p5.svg",
+      "image": "images/p5.webp",
       "text": "嘟嘟深深吸了一口气，对着柴堆大喊：“阿嚏——！”一团火苗跳了出来，篝火“呼”地烧旺了。",
       "pinyin": [
         "dū",
@@ -231,7 +231,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p6.svg",
+      "image": "images/p6.webp",
       "text": "大家围着火堆取暖，还请嘟嘟对着锅子打喷嚏。“噼里啪啦！”爆出了一大锅香喷喷的爆米花。",
       "pinyin": [
         "dà",
@@ -279,7 +279,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p7.svg",
+      "image": "images/p7.webp",
       "text": "从那天起，再也没有人躲着嘟嘟了。原来打喷嚏，也可以帮上大忙呀！",
       "pinyin": [
         "cóng",

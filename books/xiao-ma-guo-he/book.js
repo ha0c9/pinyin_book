@@ -2,10 +2,10 @@ window.registerBook({
   "id": "xiao-ma-guo-he",
   "title": "小马过河",
   "grade": 2,
-  "cover": "images/cover.svg",
+  "cover": "images/cover.webp",
   "pages": [
     {
-      "image": "images/p1.svg",
+      "image": "images/p1.webp",
       "text": "小马乐乐第一次帮妈妈做事：把半袋麦子送到河对岸的磨坊去。",
       "pinyin": [
         "xiǎo",
@@ -39,7 +39,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p2.svg",
+      "image": "images/p2.webp",
       "text": "走到小河边，河水哗哗地流。乐乐停住了脚步：河水会不会很深呀？",
       "pinyin": [
         "zǒu",
@@ -75,7 +75,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p3.svg",
+      "image": "images/p3.webp",
       "text": "老牛伯伯在河边吃草。他说：“水很浅，刚没过小腿，放心过去吧。”",
       "pinyin": [
         "lǎo",
@@ -112,7 +112,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p4.svg",
+      "image": "images/p4.webp",
       "text": "乐乐刚要下水，松鼠急忙从树上跳下来喊：“别过河！水可深啦，前天还淹到过我的下巴！”",
       "pinyin": [
         "lè",
@@ -159,7 +159,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p5.svg",
+      "image": "images/p5.webp",
       "text": "乐乐糊涂了：老牛说水浅，松鼠说水深，到底该听谁的呢？他只好跑回家去问妈妈。",
       "pinyin": [
         "lè",
@@ -202,7 +202,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p6.svg",
+      "image": "images/p6.webp",
       "text": "妈妈笑着说：“孩子，别人说的不一定都对。河水是深是浅，你自己去试一试，不就知道了吗？”",
       "pinyin": [
         "mā",
@@ -251,7 +251,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p7.svg",
+      "image": "images/p7.webp",
       "text": "乐乐小心地走下河。原来河水不深也不浅，刚刚没过他的膝盖。",
       "pinyin": [
         "lè",
@@ -285,7 +285,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p8.svg",
+      "image": "images/p8.webp",
       "text": "乐乐顺利地把麦子送到了磨坊。他明白了：遇到事情要自己动脑筋，亲自试一试！",
       "pinyin": [
         "lè",

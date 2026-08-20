@@ -2,10 +2,10 @@ window.registerBook({
   "id": "wu-ya-he-shui",
   "title": "乌鸦喝水",
   "grade": 2,
-  "cover": "images/cover.svg",
+  "cover": "images/cover.webp",
   "pages": [
     {
-      "image": "images/p1.svg",
+      "image": "images/p1.webp",
       "text": "大热天，小乌鸦阿黑飞了好远好远的路，渴得嗓子直冒烟。",
       "pinyin": [
         "dà",
@@ -37,7 +37,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p2.svg",
+      "image": "images/p2.webp",
       "text": "他终于看见一个瓶子，里面有半瓶水。可是瓶口太小，水又太低，怎么也喝不着。",
       "pinyin": [
         "tā",
@@ -79,7 +79,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p3.svg",
+      "image": "images/p3.webp",
       "text": "阿黑试着推瓶子，想把水倒出来。不行不行！瓶子一倒，水就全洒光了。",
       "pinyin": [
         "ā",
@@ -117,7 +117,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p4.svg",
+      "image": "images/p4.webp",
       "text": "阿黑歪着头想呀想。忽然，他看见地上有许多小石子，眼睛一下子亮了。",
       "pinyin": [
         "ā",
@@ -155,7 +155,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p5.svg",
+      "image": "images/p5.webp",
       "text": "他叼起一颗石子，“扑通”一声放进瓶子里。水面轻轻升高了一点点。",
       "pinyin": [
         "tā",
@@ -192,7 +192,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p6.svg",
+      "image": "images/p6.webp",
       "text": "一颗，两颗，三颗……阿黑放了一颗又一颗，瓶子里的水慢慢升到了瓶口。",
       "pinyin": [
         "yì",
@@ -231,7 +231,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p7.svg",
+      "image": "images/p7.webp",
       "text": "“咕咚咕咚！”阿黑喝到了清凉的水。他拍着翅膀说：“肯动脑筋，就没有办不成的事！”",
       "pinyin": [
         "",

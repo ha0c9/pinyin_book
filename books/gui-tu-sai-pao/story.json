@@ -2,14 +2,14 @@
   "id": "gui-tu-sai-pao",
   "title": "龟兔赛跑",
   "grade": 2,
-  "cover": "images/cover.svg",
+  "cover": "images/cover.webp",
   "pages": [
     {
-      "image": "images/p1.svg",
+      "image": "images/p1.webp",
       "text": "森林里要举行跑步比赛啦！小兔子白白第一个报名，还大声说：“谁都跑不过我！”"
     },
     {
-      "image": "images/p2.svg",
+      "image": "images/p2.webp",
       "text": "小乌龟壳壳慢吞吞地举起手：“我来试试。”大家都惊讶得张大了嘴巴。",
       "fix": {
         "8": "de",
@@ -17,15 +17,15 @@
       }
     },
     {
-      "image": "images/p3.svg",
+      "image": "images/p3.webp",
       "text": "比赛开始了！白白像风一样冲了出去，一眨眼就不见了影子。壳壳一步一步慢慢爬。"
     },
     {
-      "image": "images/p4.svg",
+      "image": "images/p4.webp",
       "text": "白白回头一看，连壳壳的影子都没有。“睡一觉再跑也来得及。”他躺在大树下，呼呼睡着了。"
     },
     {
-      "image": "images/p5.svg",
+      "image": "images/p5.webp",
       "text": "壳壳爬呀爬，太阳晒得他满头大汗。路过大树时，他真想歇一歇，可他摇摇头，继续往前爬。",
       "fix": {
         "9": "de",
@@ -33,18 +33,18 @@
       }
     },
     {
-      "image": "images/p6.svg",
+      "image": "images/p6.webp",
       "text": "天快黑了，白白揉着眼睛醒来，吓了一跳，撒腿就往终点跑。",
       "fix": {
         "8": "zhe"
       }
     },
     {
-      "image": "images/p7.svg",
+      "image": "images/p7.webp",
       "text": "可是太晚了！壳壳已经爬过了终点线，大家欢呼着，把他高高举了起来。"
     },
     {
-      "image": "images/p8.svg",
+      "image": "images/p8.webp",
       "text": "白白红着脸说：“是我太骄傲了。”从那天起，他再也不敢小看别人了。"
     }
   ]

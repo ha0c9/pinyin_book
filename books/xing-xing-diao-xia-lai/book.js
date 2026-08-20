@@ -2,10 +2,10 @@ window.registerBook({
   "id": "xing-xing-diao-xia-lai",
   "title": "星星掉下来了",
   "grade": 2,
-  "cover": "images/cover.svg",
+  "cover": "images/cover.webp",
   "pages": [
     {
-      "image": "images/p1.svg",
+      "image": "images/p1.webp",
       "text": "夜里，森林里的动物都睡着了。忽然，“咚”的一声，一颗小星星从天上掉了下来，落进了软软的草丛。",
       "pinyin": [
         "yè",
@@ -57,7 +57,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p2.svg",
+      "image": "images/p2.webp",
       "text": "小狐狸阿橙第一个跑过来。小星星瘪着嘴，眼泪一闪一闪：“我找不到回家的路了。”",
       "pinyin": [
         "xiǎo",
@@ -101,7 +101,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p3.svg",
+      "image": "images/p3.webp",
       "text": "阿橙踮起脚尖，使劲把星星往天上抛。可是星星只飞到树梢，又“咕咚”掉了下来。",
       "pinyin": [
         "ā",
@@ -144,7 +144,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p4.svg",
+      "image": "images/p4.webp",
       "text": "猫头鹰想背它飞上去，飞到一半就累得直喘气。天太高了，谁也够不着。",
       "pinyin": [
         "māo",
@@ -182,7 +182,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p5.svg",
+      "image": "images/p5.webp",
       "text": "“有了！”阿橙找来竹条和纸，和朋友们做了一只大大的风筝，把小星星轻轻绑在上面。",
       "pinyin": [
         "",
@@ -227,7 +227,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p6.svg",
+      "image": "images/p6.webp",
       "text": "夜风吹来，风筝越飞越高，穿过了云朵。萤火虫们提着小灯笼，一路给星星照亮。",
       "pinyin": [
         "yè",
@@ -269,7 +269,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p7.svg",
+      "image": "images/p7.webp",
       "text": "“到家啦！”小星星跳回夜空，开心地转了三个圈，把整片天空擦得亮晶晶的。",
       "pinyin": [
         "",
@@ -310,7 +310,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p8.svg",
+      "image": "images/p8.webp",
       "text": "从那以后，每天晚上，天上最亮的那颗星星都会朝着森林眨眼睛，好像在说：谢谢你们！",
       "pinyin": [
         "cóng",
