@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>点读绘本屋</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- 书架页 -->
+<section id="shelf-view" class="view">
+  <header class="shelf-header">
+    <h1><span class="logo-icon">📚</span> 点读绘本屋</h1>
+    <button id="settings-btn" class="icon-btn" title="设置" aria-label="设置">⚙️</button>
+  </header>
+  <p class="shelf-hint">点一本书开始阅读吧！不认识的字，点一下就有拼音哦。</p>
+  <div id="shelf-grid" class="shelf-grid"></div>
+</section>
+
+<!-- 阅读页 -->
+<section id="reader-view" class="view hidden">
+  <header class="reader-header">
+    <button id="back-btn" class="icon-btn" title="回到书架" aria-label="回到书架">🏠</button>
+    <div id="book-title" class="book-title"></div>
+    <div class="reader-header-right">
+      <span id="page-indicator" class="page-indicator"></span>
+      <button id="settings-btn-2" class="icon-btn" title="设置" aria-label="设置">⚙️</button>
+    </div>
+  </header>
+
+  <main class="page-area">
+    <button id="prev-btn" class="nav-btn nav-prev" aria-label="上一页">‹</button>
+    <div id="page-content" class="page-content">
+      <div id="page-image-wrap" class="page-image-wrap">
+        <img id="page-image" class="page-image" alt="故事插图">
+      </div>
+      <div id="page-text" class="page-text"></div>
+    </div>
+    <button id="next-btn" class="nav-btn nav-next" aria-label="下一页">›</button>
+  </main>
+</section>
+
+<!-- 设置面板 -->
+<div id="settings-overlay" class="overlay hidden">
+  <div class="settings-panel">
+    <h2>⚙️ 设置</h2>
+
+    <div class="setting-row">
+      <label>拼音停留时间</label>
+      <div class="option-group" id="duration-options">
+        <button data-value="3000">3秒</button>
+        <button data-value="5000">5秒</button>
+        <button data-value="10000">10秒</button>
+        <button data-value="30000">30秒</button>
+        <button data-value="0">不消失</button>
+      </div>
+    </div>
+
+    <div class="setting-row">
+      <label>字号</label>
+      <div class="option-group" id="fontsize-options">
+        <button data-value="large">大</button>
+        <button data-value="xlarge">特大</button>
+      </div>
+    </div>
+
+    <div class="setting-row">
+      <label>整页拼音（辅助模式）</label>
+      <div class="option-group" id="allpinyin-options">
+        <button data-value="off">关</button>
+        <button data-value="on">开</button>
+      </div>
+    </div>
+
+    <button id="settings-close" class="settings-close">好啦</button>
+  </div>
+</div>
+
+<script src="js/settings.js"></script>
+<script src="js/reader.js"></script>
+<script src="js/app.js"></script>
+<script src="books/index.js"></script>
+</body>
+</html>
