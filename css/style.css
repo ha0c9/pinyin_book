@@ -197,6 +197,7 @@ body[data-fontsize="xlarge"] .page-text { font-size: 2.5rem; }
   border-radius: 8px;
   transition: background 0.15s;
   display: inline-block;
+  line-height: 1.35; /* 高亮块贴合字形，不随正文 2.4 行高拉长 */
 }
 .char:hover { background: var(--primary-soft); }
 .char.active { background: var(--highlight); }
