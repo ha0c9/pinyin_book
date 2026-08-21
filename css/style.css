@@ -52,15 +52,67 @@ html, body {
   align-items: center;
   justify-content: space-between;
   padding: 1.2rem 1.5rem 0.5rem;
+  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
 }
 .shelf-header h1 { font-size: 1.8rem; color: var(--primary); }
-.shelf-hint { padding: 0 1.5rem 1rem; color: var(--text-light); font-size: 1rem; }
+.shelf-hint { padding: 0.4rem 1.5rem 0.9rem; color: var(--text-light); font-size: 1rem; }
+
+.shelf-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  padding-bottom: 0.15rem;
+  box-shadow: 0 8px 16px -12px rgba(120, 90, 40, 0.35);
+}
+
+.category-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.35rem 1.5rem 0.55rem;
+  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+}
+
+.category-chip {
+  border: 2px solid var(--primary-soft);
+  background: var(--card);
+  color: var(--text);
+  padding: 0.45rem 0.95rem;
+  min-height: 44px;
+  border-radius: 999px;
+  font-size: 0.98rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(120, 90, 40, 0.08);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.category-chip.selected {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.category-chip:active { transform: scale(0.96); }
 
 .shelf-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(170px, 220px));
+  justify-content: start;
   gap: 1.5rem;
   padding: 0.5rem 1.5rem 2rem;
+  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+  padding-bottom: max(2rem, env(safe-area-inset-bottom, 0px));
+}
+
+.shelf-empty {
+  color: var(--text-light);
+  grid-column: 1 / -1;
+  padding: 1rem 0.2rem;
 }
 
 .book-card {
@@ -73,25 +125,66 @@ html, body {
   border: none;
   text-align: center;
   padding: 0;
+  touch-action: manipulation;
+  width: 100%;
 }
-.book-card:hover { transform: translateY(-6px); }
-.book-card img {
+@media (hover: hover) and (pointer: fine) {
+  .book-card:hover { transform: translateY(-6px); }
+}
+.book-card:active { transform: scale(0.98); }
+
+.card-cover {
   width: 100%;
   aspect-ratio: 4 / 3;
+  background: var(--primary-soft);
+  overflow: hidden;
+}
+.card-cover img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
-  background: var(--primary-soft);
+  opacity: 1;
+  transition: opacity 0.2s ease;
 }
+.card-cover img.is-loading { opacity: 0; }
+.card-cover.no-cover::after {
+  content: "📖";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 2.4rem;
+}
+
+.book-card-skeleton {
+  pointer-events: none;
+  min-height: 12rem;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, #f4e8d6 0%, #fbeedc 50%, #f4e8d6 100%);
+  background-size: 200% 100%;
+  animation: skeleton-shine 1.2s ease-in-out infinite;
+}
+@keyframes skeleton-shine {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
 .book-card .card-title {
   font-size: 1.15rem;
   font-weight: bold;
-  padding: 0.8rem 0.5rem;
+  padding: 0.8rem 0.5rem 0.15rem;
   color: var(--text);
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .book-card .card-meta {
   font-size: 0.85rem;
   color: var(--text-light);
-  padding-bottom: 0.9rem;
+  padding: 0.2rem 0.5rem 0.9rem;
 }
 
 /* ============ 阅读页 ============ */
@@ -226,7 +319,10 @@ html, body {
   max-height: 100%;
   object-fit: contain;
   display: block;
+  opacity: 1;
+  transition: opacity 0.18s ease;
 }
+.page-image.is-loading { opacity: 0; }
 .page-image-wrap.no-image { display: none; }
 
 .page-text {
@@ -396,7 +492,10 @@ body[data-fontsize="xlarge"] .page-text {
 
 /* 手机窄屏微调 */
 @media (max-width: 600px) {
-  .shelf-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+  .shelf-header h1 { font-size: 1.45rem; }
+  .shelf-header { padding-top: 0.9rem; padding-bottom: 0.35rem; }
+  .category-chip { min-height: 40px; padding: 0.35rem 0.8rem; font-size: 0.92rem; }
+  .shelf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
   .page-text { padding: 1.6rem 1rem 1.1rem; line-height: 1.9; }
   .nav-btn { width: 2.8rem; height: 2.2rem; font-size: 1.6rem; }
   .page-nav { padding: 0.1rem 0.9rem 0.3rem; }
@@ -408,6 +507,11 @@ body[data-fontsize="xlarge"] .page-text {
 
 /* 矮屏（手机横屏等）：进一步压缩装饰空间，优先保证文字与按钮完整 */
 @media (max-height: 480px) {
+  .shelf-header { padding: 0.4rem 0.8rem 0.15rem; }
+  .shelf-header h1 { font-size: 1.2rem; }
+  .category-bar { padding-top: 0.15rem; padding-bottom: 0.3rem; gap: 0.35rem; }
+  .category-chip { min-height: 34px; padding: 0.2rem 0.7rem; font-size: 0.85rem; }
+  .shelf-hint { padding: 0.2rem 1rem 0.5rem; font-size: 0.9rem; }
   .reader-header { padding: 0.4rem 0.8rem; }
   .page-text { line-height: 1.8; padding: 0.7rem 1.2rem; }
   .page-area { padding-bottom: 0.6rem; }

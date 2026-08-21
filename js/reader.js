@@ -3,6 +3,7 @@
   var currentBook = null;
   var currentPage = 0;
   var bubbleTimers = new WeakMap();
+  var pageImageToken = 0;
 
   var el = {}; // DOM 引用，init 时填充
 
@@ -87,17 +88,45 @@
     });
   }
 
+  function clearPageImage() {
+    if (!el.pageImage) return;
+    el.pageImage.onload = null;
+    el.pageImage.onerror = null;
+    el.pageImage.classList.remove("is-loading");
+    el.pageImage.removeAttribute("src");
+  }
+
   function renderPage() {
     var page = currentBook.pages[currentPage];
+    var token = ++pageImageToken;
 
     if (page.image) {
       el.pageImageWrap.classList.remove("no-image");
-      el.pageImage.src = currentBook.basePath + page.image;
+      var src = currentBook.basePath + page.image;
+      var img = el.pageImage;
+      var already = img.getAttribute("src") === src && img.complete && img.naturalWidth;
+
+      img.onload = function () {
+        if (token !== pageImageToken) return;
+        img.classList.remove("is-loading");
+      };
+      img.onerror = function () {
+        if (token !== pageImageToken) return;
+        img.classList.remove("is-loading");
+        el.pageImageWrap.classList.add("no-image");
+        img.removeAttribute("src");
+      };
+
+      if (already) {
+        img.classList.remove("is-loading");
+      } else {
+        img.classList.add("is-loading");
+        img.src = src;
+      }
     } else {
       el.pageImageWrap.classList.add("no-image");
-      el.pageImage.removeAttribute("src");
+      clearPageImage();
     }
-    el.pageImage.onerror = function () { el.pageImageWrap.classList.add("no-image"); };
 
     renderText(page);
 
@@ -132,6 +161,8 @@
     },
     close: function () {
       currentBook = null;
+      pageImageToken++;
+      clearPageImage();
     }
   };
 

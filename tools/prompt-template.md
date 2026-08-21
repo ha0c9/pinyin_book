@@ -67,14 +67,18 @@ python3 tools/make_book.py books/<故事id>/story.json
 
 ## 四、上架
 
-在 `books/index.js` 中追加一行：
+在 `books/index.js` 对应分类的 `books` 数组里追加路径：
 
 ```js
-window.loadBooks([
-  "books/xiao-huo-long/book.js",
-  "books/wo-niu-kuai-di/book.js",
-  "books/<新故事id>/book.js"
-]);
+{
+  id: "ai",
+  name: "AI 故事",
+  hint: "新编的小童话，点不认识的字就能看到拼音。",
+  books: [
+    "books/xiao-huo-long/book.js",
+    "books/<新故事id>/book.js"
+  ]
+}
 ```
 
-刷新浏览器，新故事就出现在书架上了。
+刷新浏览器，新故事就出现在对应分类里了。分类目前有：AI 故事、自编故事、水墨中国故事、经典童话。
