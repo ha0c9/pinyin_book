@@ -25,7 +25,11 @@ window.loadBooks([
     hint: "水墨风的中国经典故事。",
     books: [
       "books/shen-bi-ma-liang/book.js",
-      "books/san-ge-he-shang/book.js"
+      "books/san-ge-he-shang/book.js",
+      "books/kong-rong-rang-li/book.js",
+      "books/tie-zhu-mo-cheng-zhen/book.js",
+      "books/si-ma-guang-za-gang/book.js",
+      "books/han-hao-niao/book.js"
     ]
   },
   {
