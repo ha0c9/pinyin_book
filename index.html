@@ -10,12 +10,15 @@
 
 <!-- 书架页 -->
 <section id="shelf-view" class="view">
-  <header class="shelf-header">
-    <h1><span class="logo-icon">📚</span> 点读绘本屋</h1>
-    <button id="settings-btn" class="icon-btn" title="设置" aria-label="设置">⚙️</button>
-  </header>
-  <p class="shelf-hint">点一本书开始阅读吧！不认识的字，点一下就有拼音哦。</p>
-  <div id="shelf-grid" class="shelf-grid"></div>
+  <div class="shelf-top">
+    <header class="shelf-header">
+      <h1><span class="logo-icon">📚</span> 点读绘本屋</h1>
+      <button id="settings-btn" class="icon-btn" title="设置" aria-label="设置">⚙️</button>
+    </header>
+    <nav id="category-bar" class="category-bar" role="tablist" aria-label="故事分类"></nav>
+  </div>
+  <p id="shelf-hint" class="shelf-hint">点一本书开始阅读吧！不认识的字，点一下就有拼音哦。</p>
+  <div id="shelf-grid" class="shelf-grid" role="tabpanel"></div>
 </section>
 
 <!-- 阅读页 -->
@@ -35,7 +38,7 @@
   <main class="page-area">
     <div id="page-content" class="page-content">
       <div id="page-image-wrap" class="page-image-wrap">
-        <img id="page-image" class="page-image" alt="故事插图">
+        <img id="page-image" class="page-image" alt="故事插图" decoding="async" draggable="false">
       </div>
       <div class="page-nav">
         <button id="prev-btn" class="nav-btn nav-prev" aria-label="上一页">‹</button>
