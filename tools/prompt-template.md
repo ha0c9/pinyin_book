@@ -63,7 +63,7 @@ python3 tools/make_book.py books/<故事id>/story.json
 ```
 
 图片保存到 `books/<故事id>/images/`，文件名与 story.json 中一致（p1、p2……，封面 cover）。
-建议压缩为 webp、长边 ≤ 1280px。现有范本书已使用 AI 水彩图；若暂时无法文生图，可用 `tools/gen_placeholder_art.py` 生成扁平 SVG 占位。
+建议压缩为 webp、长边 ≤ 800px（可用 `python3 tools/compress_images.py books/<故事id>/images`）。现有范本书已使用 AI 水彩图；若暂时无法文生图，可用 `tools/gen_placeholder_art.py` 生成扁平 SVG 占位。
 
 ## 四、上架
 
