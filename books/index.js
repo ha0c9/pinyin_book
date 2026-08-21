@@ -8,5 +8,6 @@ window.loadBooks([
   "books/wu-ya-he-shui/book.js",
   "books/xiao-ma-guo-he/book.js",
   "books/shen-bi-ma-liang/book.js",
-  "books/san-ge-he-shang/book.js"
+  "books/san-ge-he-shang/book.js",
+  "books/dong-wu-wang-guo-kai-da-hui/book.js"
 ]);
