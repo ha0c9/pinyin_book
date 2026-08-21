@@ -14,9 +14,10 @@ window.loadBooks([
   {
     id: "original",
     name: "自编故事",
-    hint: "用家里的玩偶当主人公，自己演的故事。",
+    hint: "用家里的玩偶和小动物当主人公，自己演的故事。",
     books: [
-      "books/dong-wu-wang-guo-kai-da-hui/book.js"
+      "books/dong-wu-wang-guo-kai-da-hui/book.js",
+      "books/wu-yi-he-shui-ta/book.js"
     ]
   },
   {
