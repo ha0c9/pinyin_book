@@ -50,7 +50,7 @@
 | 皇帝的新装 | 10 页 | 骗子说看不见布的人是笨蛋，大家都不敢说真话。告诉我们：要诚实，不要爱面子 |
 | 狼来了 | 9 页 | 放羊的孩子两次撒谎喊狼来了，真狼来时没人信。告诉我们：不要撒谎 |
 
-配图为 AI 生成的水彩绘本插画（webp），可随时用新图同名替换 `books/<故事id>/images/` 下的文件。扁平 SVG 生成器仍保留在 `tools/gen_placeholder_art.py`，作为无模型时的备选。
+配图为 AI 生成的水彩绘本插画（webp，长边约 800px），可随时用新图同名替换 `books/<故事id>/images/` 下的文件。新图建议先跑 `python3 tools/compress_images.py books/<故事id>/images`，避免手机加载过慢。扁平 SVG 生成器仍保留在 `tools/gen_placeholder_art.py`，作为无模型时的备选。
 
 ## 添加新故事
 
@@ -74,6 +74,7 @@ js/settings.js        设置面板（localStorage 持久化）
 books/index.js        书架清单
 books/<故事id>/       每本书：story.json（源文件）、book.js（生成）、images/
 tools/make_book.py    story.json → book.js（自动逐字注音 + 一/不变调）
+tools/compress_images.py  把 images/ 里的 webp 压到适合手机加载的大小
 tools/gen_placeholder_art.py  范本书插画生成器
 tools/prompt-template.md      AI 内容生成提示词模板
 ```
