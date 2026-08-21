@@ -383,7 +383,7 @@ window.registerBook({
         "le",
         "",
         "què",
-        "shuí",
+        "shéi",
         "yě",
         "bú",
         "xìn",
