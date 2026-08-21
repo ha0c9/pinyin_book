@@ -160,10 +160,10 @@ html, body {
 .book-card-skeleton {
   pointer-events: none;
   min-height: 12rem;
+  border-radius: var(--radius);
   background: linear-gradient(90deg, #f4e8d6 0%, #fbeedc 50%, #f4e8d6 100%);
   background-size: 200% 100%;
   animation: skeleton-shine 1.2s ease-in-out infinite;
-  box-shadow: none;
 }
 @keyframes skeleton-shine {
   from { background-position: 100% 0; }

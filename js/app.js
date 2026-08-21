@@ -157,7 +157,7 @@
     grid.innerHTML = "";
     for (var i = 0; i < count; i++) {
       var sk = document.createElement("div");
-      sk.className = "book-card book-card-skeleton";
+      sk.className = "book-card-skeleton";
       sk.setAttribute("aria-hidden", "true");
       grid.appendChild(sk);
     }
