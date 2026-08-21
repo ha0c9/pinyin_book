@@ -35,7 +35,10 @@ window.loadBooks([
     books: [
       "books/gui-tu-sai-pao/book.js",
       "books/wu-ya-he-shui/book.js",
-      "books/xiao-ma-guo-he/book.js"
+      "books/xiao-ma-guo-he/book.js",
+      "books/nong-fu-he-jin-yu/book.js",
+      "books/huang-di-de-xin-zhuang/book.js",
+      "books/lang-lai-le/book.js"
     ]
   }
 ]);
