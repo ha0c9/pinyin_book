@@ -132,4 +132,29 @@ python3 tools/make_book.py books/<故事id>/story.json
 }
 ```
 
-刷新浏览器，新故事就出现在对应分类里了。分类目前有：AI 故事、自编故事、水墨中国故事、经典童话。
+刷新浏览器，新故事就出现在对应分类里了。分类目前有：AI 故事、自编故事、水墨中国故事、经典童话、英文绘本。
+
+---
+
+## 五、英文绘本
+
+英文故事和中文不同：点的是**单词**，气泡里是**中文意思**，同时用系统语音朗读该英文单词。
+
+story.json 示例：
+
+```
+{
+  "id": "where-is-kitty",
+  "title": "Where Is Kitty?",
+  "lang": "en",
+  "grade": 2,
+  "cover": "images/cover.webp",
+  "glossary": { "little": "小的", "cat": "猫", "happy": "开心" },
+  "pages": [
+    { "image": "images/p1.webp", "text": "Lucy has a little cat." }
+  ]
+}
+```
+
+用词贴近上海小学二年级（牛津上海版常见词：colour、family、animal、I like / I can / This is / Where is）。
+生成：`python3 tools/make_en_book.py books/<id>/story.json`，再把路径加到 `books/index.js` 的「英文绘本」分类。

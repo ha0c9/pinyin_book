@@ -26,12 +26,24 @@
   function validateBook(data) {
     if (!data.id || !data.title) return "缺少 id 或 title";
     if (!Array.isArray(data.pages) || data.pages.length === 0) return "缺少 pages";
+    var isEn = data.lang === "en";
     for (var i = 0; i < data.pages.length; i++) {
       var p = data.pages[i];
-      var chars = Array.from(p.text || "");
-      if (!Array.isArray(p.pinyin) || p.pinyin.length !== chars.length) {
-        return "第 " + (i + 1) + " 页 pinyin 数组长度(" +
-          (p.pinyin ? p.pinyin.length : 0) + ")与文字字数(" + chars.length + ")不一致";
+      if (isEn) {
+        if (!Array.isArray(p.words) || p.words.length === 0) {
+          return "第 " + (i + 1) + " 页缺少 words";
+        }
+        for (var w = 0; w < p.words.length; w++) {
+          if (!p.words[w] || typeof p.words[w].en !== "string" || !p.words[w].en) {
+            return "第 " + (i + 1) + " 页 words[" + w + "] 缺少 en";
+          }
+        }
+      } else {
+        var chars = Array.from(p.text || "");
+        if (!Array.isArray(p.pinyin) || p.pinyin.length !== chars.length) {
+          return "第 " + (i + 1) + " 页 pinyin 数组长度(" +
+            (p.pinyin ? p.pinyin.length : 0) + ")与文字字数(" + chars.length + ")不一致";
+        }
       }
     }
     return null;
@@ -210,7 +222,9 @@
 
       var meta = document.createElement("div");
       meta.className = "card-meta";
-      meta.textContent = book.pages.length + " 页" + (book.grade ? " · 适合" + book.grade + "年级" : "");
+      meta.textContent = book.pages.length + " 页" +
+        (book.lang === "en" ? " · 英文" : "") +
+        (book.grade ? " · 适合" + book.grade + "年级" : "");
       card.appendChild(meta);
 
       card.addEventListener("click", function () { openBook(book); });

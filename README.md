@@ -1,18 +1,19 @@
 # 点读绘本屋（pinyin_book）
 
-给小朋友读的汉字绘本网站：有故事、有配图，**不认识的字点一下，上方出现拼音**，
-过一会儿自动消失（时长可设置）。
+给小朋友读的绘本网站：中文故事**不认识的字点一下就有拼音**；英文故事**不认识的单词点一下就有中文，并读出英文**。
+气泡过一会儿自动消失（时长可设置）。
 
 ## 怎么用
 
 把整个文件夹拷贝到任何电脑，用浏览器（Chrome / Edge / Safari）**双击打开 `index.html`** 即可，
-无需联网、无需安装任何软件。
+无需联网、无需安装任何软件。英文读音使用系统自带的语音（Web Speech），一般也不需要联网。
 
-- 书架页先选分类（AI 故事 / 自编故事 / 水墨中国故事 / 经典童话），再点封面开始阅读；
+- 书架页先选分类（AI 故事 / 自编故事 / 水墨中国故事 / 经典童话 / 英文绘本），再点封面开始阅读；
 - 只有当前分类的封面会加载；打开书以后，翻到哪一页才加载那一页的插图；
-- 阅读页点不认识的字，字的上方弹出拼音气泡，到时自动消失；再点一下该字，拼音立即消失；
+- 中文阅读页：点不认识的字，字的上方弹出拼音；英文阅读页：点不认识的单词，上方弹出中文，并朗读该词；
+- 气泡到时自动消失；再点一下该字/单词，气泡立即消失；
 - 左右按钮 / 键盘方向键 / 触屏滑动翻页；
-- 左上角 🏠 回到书架；页码旁 ⏮ 回到本书第一页；⚙️ 设置（拼音停留时间、字号）；
+- 左上角 🏠 回到书架；页码旁 ⏮ 回到本书第一页；⚙️ 设置（气泡停留时间、字号）；
 - 自动记住每本书上次读到的页码。
 
 ## 内置范本故事
@@ -56,6 +57,12 @@
 | 皇帝的新装 | 10 页 | 骗子说看不见布的人是笨蛋，大家都不敢说真话。告诉我们：要诚实，不要爱面子 |
 | 狼来了 | 10 页 | 小亮两次撒谎喊狼来了，真狼来时没人信。告诉我们：不要撒谎 |
 
+**英文绘本**
+
+| 故事 | 页数 | 简介 |
+|---|---|---|
+| Where Is Kitty? | 8 页 | 上海小学二年级词汇。露西找小猫凯蒂，点单词可看中文、听读音 |
+
 配图为 AI 生成的水彩绘本插画（webp，长边约 800px），可随时用新图同名替换 `books/<故事id>/images/` 下的文件。新图建议先跑 `python3 tools/compress_images.py books/<故事id>/images`，避免手机加载过慢。扁平 SVG 生成器仍保留在 `tools/gen_placeholder_art.py`，作为无模型时的备选。
 
 ## 添加新故事
@@ -63,7 +70,8 @@
 三步上架，不用改代码：
 
 1. 新建 `books/<故事id>/` 文件夹，放入 `story.json`（文字）和 `images/`（配图）；
-2. 运行 `python3 tools/make_book.py books/<故事id>/story.json` 生成带逐字拼音的 `book.js`（并人工核对多音字）；
+2. 中文故事运行 `python3 tools/make_book.py books/<故事id>/story.json` 生成带逐字拼音的 `book.js`（并人工核对多音字）；
+   英文故事运行 `python3 tools/make_en_book.py books/<故事id>/story.json` 生成带逐词中文的 `book.js`（并核对释义）；
 3. 在 `books/index.js` 对应分类的 `books` 数组里追加该书的路径。
 
 故事文字、拼音、配图都可以用 AI 生成，提示词模板见 [`tools/prompt-template.md`](tools/prompt-template.md)。
@@ -75,11 +83,12 @@
 index.html            入口（书架 + 阅读器，单页应用）
 css/style.css         样式
 js/app.js             书架与数据加载
-js/reader.js          阅读器、点字出拼音
+js/reader.js          阅读器、点字出拼音 / 点词出中文与读音
 js/settings.js        设置面板（localStorage 持久化）
 books/index.js        书架清单
 books/<故事id>/       每本书：story.json（源文件）、book.js（生成）、images/
-tools/make_book.py    story.json → book.js（自动逐字注音 + 一/不变调）
+tools/make_book.py    中文 story.json → book.js（自动逐字注音 + 一/不变调）
+tools/make_en_book.py 英文 story.json → book.js（按 glossary 逐词中文）
 tools/compress_images.py  把 images/ 里的 webp 压到适合手机加载的大小
 tools/gen_placeholder_art.py  范本书插画生成器
 tools/prompt-template.md      AI 内容生成提示词模板
