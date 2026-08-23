@@ -46,5 +46,13 @@ window.loadBooks([
       "books/huang-di-de-xin-zhuang/book.js",
       "books/lang-lai-le/book.js"
     ]
+  },
+  {
+    id: "en",
+    name: "英文绘本",
+    hint: "点不认识的单词，就能看到中文，还能听读音。",
+    books: [
+      "books/where-is-kitty/book.js"
+    ]
   }
 ]);

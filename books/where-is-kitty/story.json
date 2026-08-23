@@ -1,0 +1,94 @@
+{
+  "id": "where-is-kitty",
+  "title": "Where Is Kitty?",
+  "lang": "en",
+  "grade": 2,
+  "cover": "images/cover.webp",
+  "glossary": {
+    "Lucy": "露西",
+    "has": "有",
+    "a": "一只",
+    "A": "一只",
+    "little": "小的",
+    "white": "白色的",
+    "cat": "猫",
+    "The": "这只",
+    "the": "这",
+    "cat's": "小猫的",
+    "name": "名字",
+    "is": "是",
+    "Kitty": "凯蒂",
+    "One": "一个",
+    "sunny": "晴朗的",
+    "morning": "早上",
+    "looks": "看",
+    "in": "在……里",
+    "box": "盒子",
+    "not": "不",
+    "there": "在那里",
+    "room": "房间",
+    "She": "她",
+    "under": "在……下面",
+    "bed": "床",
+    "No": "没有",
+    "goes": "走去",
+    "to": "到",
+    "garden": "花园",
+    "and": "又",
+    "bird": "小鸟",
+    "tree": "树",
+    "says": "说",
+    "Look": "看",
+    "up": "向上",
+    "big": "大的",
+    "green": "绿色的",
+    "Come": "过来",
+    "down": "下来",
+    "jumps": "跳",
+    "hugs": "拥抱",
+    "her": "她",
+    "happy": "开心",
+    "You": "你",
+    "are": "是",
+    "my": "我的",
+    "good": "好",
+    "friend": "朋友",
+    "I": "我",
+    "love": "爱",
+    "you": "你"
+  },
+  "pages": [
+    {
+      "image": "images/p1.webp",
+      "text": "Lucy has a little white cat. The cat's name is Kitty."
+    },
+    {
+      "image": "images/p2.webp",
+      "text": "One sunny morning, Lucy looks in the box. Kitty is not there!"
+    },
+    {
+      "image": "images/p3.webp",
+      "text": "Lucy looks in the room. She looks under the bed. No Kitty."
+    },
+    {
+      "image": "images/p4.webp",
+      "text": "Lucy goes to the garden. She looks and looks. No Kitty."
+    },
+    {
+      "image": "images/p5.webp",
+      "text": "A little bird in the tree says, \"Look up! Look up!\""
+    },
+    {
+      "image": "images/p6.webp",
+      "text": "Lucy looks up. Kitty is in the big green tree!"
+    },
+    {
+      "image": "images/p7.webp",
+      "text": "\"Come down, Kitty!\" Kitty jumps down. Lucy hugs her."
+    },
+    {
+      "image": "images/p8.webp",
+      "text": "Lucy is happy. \"You are my good friend, Kitty. I love you!\""
+    }
+  ]
+}

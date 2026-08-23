@@ -403,6 +403,18 @@ body[data-fontsize="xlarge"] .page-text {
 }
 .char.active { background: var(--highlight); transition: background 0.12s ease; }
 .punct { cursor: default; }
+.word { padding: 0 0.06em; }
+.word .pinyin-bubble {
+  font-size: 0.72em;
+  letter-spacing: 0;
+}
+
+#reader-view.lang-en .page-text {
+  font-family: "Trebuchet MS", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  letter-spacing: 0.03em;
+  line-height: 1.95;
+  text-align: left;
+}
 
 .pinyin-bubble {
   position: absolute;

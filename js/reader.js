@@ -1,4 +1,4 @@
-/* 阅读器：渲染页面、点字出拼音、翻页 */
+/* 阅读器：渲染页面、点字出拼音 / 点词出中文与读音、翻页 */
 (function () {
   var currentBook = null;
   var currentPage = 0;
@@ -8,6 +8,10 @@
   var el = {}; // DOM 引用，init 时填充
 
   function $(id) { return document.getElementById(id); }
+
+  function isEnglishBook(book) {
+    return !!(book && book.lang === "en");
+  }
 
   /* ---- 阅读进度记忆 ---- */
   function progressKey(bookId) { return "pinyinBook.progress." + bookId; }
@@ -23,7 +27,34 @@
     return 0;
   }
 
-  /* ---- 拼音气泡 ---- */
+  /* ---- 英文朗读 ---- */
+  function stopSpeech() {
+    try {
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    } catch (e) {}
+  }
+
+  function speakEnglish(word) {
+    if (!word || !window.speechSynthesis) return;
+    stopSpeech();
+    var u = new SpeechSynthesisUtterance(word);
+    u.lang = "en-US";
+    u.rate = 0.85;
+    u.pitch = 1;
+    try {
+      var voices = window.speechSynthesis.getVoices() || [];
+      var en = null;
+      for (var i = 0; i < voices.length; i++) {
+        var lang = voices[i].lang || "";
+        if (/^en-US/i.test(lang)) { en = voices[i]; break; }
+        if (!en && /^en/i.test(lang)) en = voices[i];
+      }
+      if (en) u.voice = en;
+    } catch (e) {}
+    window.speechSynthesis.speak(u);
+  }
+
+  /* ---- 拼音 / 中文气泡 ---- */
   function removeBubble(charEl) {
     var bubble = charEl.querySelector(".pinyin-bubble");
     if (bubble) bubble.remove();
@@ -32,12 +63,13 @@
     if (t) { clearTimeout(t.hide); clearTimeout(t.fade); bubbleTimers.delete(charEl); }
   }
 
-  function showBubble(charEl, pinyin) {
+  function showBubble(charEl, label, speakWord) {
     var bubble = document.createElement("span");
     bubble.className = "pinyin-bubble";
-    bubble.textContent = pinyin;
+    bubble.textContent = label;
     charEl.appendChild(bubble);
     charEl.classList.add("active");
+    if (speakWord) speakEnglish(speakWord);
 
     var duration = window.AppSettings.get().pinyinDuration;
     if (duration > 0) {
@@ -52,40 +84,78 @@
     }
   }
 
+  function bindTap(node, label, speakWord) {
+    node.addEventListener("click", function () {
+      if (node.classList.contains("active") || node.querySelector(".pinyin-bubble")) {
+        removeBubble(node);
+        if (speakWord) stopSpeech();
+      } else {
+        showBubble(node, label, speakWord || "");
+      }
+    });
+  }
+
   /* ---- 页面渲染 ---- */
-  function renderText(page) {
-    var container = el.pageText;
-    container.innerHTML = "";
-    // 内层容器：避免横屏布局下 .page-text 的 flex 纵向居中把每个字拆成一行
+  function renderChineseText(page) {
     var inner = document.createElement("div");
     inner.className = "text-inner";
-    container.appendChild(inner);
     var chars = Array.from(page.text);
     var pinyins = page.pinyin || [];
 
     chars.forEach(function (ch, i) {
       var py = pinyins[i] || "";
-      var node;
-
+      var node = document.createElement("span");
       if (!py) {
-        node = document.createElement("span");
         node.className = "char punct";
         node.textContent = ch;
       } else {
-        node = document.createElement("span");
         node.className = "char";
         node.textContent = ch;
-        // 点击切换：已显示拼音时再点一下立即消失（与淡出时间设置无关）
-        node.addEventListener("click", function () {
-          if (node.classList.contains("active") || node.querySelector(".pinyin-bubble")) {
-            removeBubble(node);
-          } else {
-            showBubble(node, py);
-          }
-        });
+        bindTap(node, py, "");
       }
       inner.appendChild(node);
     });
+    return inner;
+  }
+
+  function noSpaceBefore(en) {
+    return /^[.,!?;:)'”’]/.test(en);
+  }
+
+  function isOpeningQuote(en) {
+    return en === "\"" || en === "“" || en === "‘";
+  }
+
+  function renderEnglishText(page) {
+    var inner = document.createElement("div");
+    inner.className = "text-inner";
+    var words = page.words || [];
+
+    words.forEach(function (item, i) {
+      var en = item.en;
+      if (i > 0 && !noSpaceBefore(en) && !isOpeningQuote(words[i - 1].en)) {
+        inner.appendChild(document.createTextNode(" "));
+      }
+      var node = document.createElement("span");
+      if (item.zh) {
+        node.className = "char word";
+        node.textContent = en;
+        bindTap(node, item.zh, en);
+      } else {
+        node.className = "char punct";
+        node.textContent = en;
+      }
+      inner.appendChild(node);
+    });
+    return inner;
+  }
+
+  function renderText(page) {
+    var container = el.pageText;
+    container.innerHTML = "";
+    // 内层容器：避免横屏布局下 .page-text 的 flex 纵向居中把每个字拆成一行
+    var inner = isEnglishBook(currentBook) ? renderEnglishText(page) : renderChineseText(page);
+    container.appendChild(inner);
   }
 
   function clearPageImage() {
@@ -130,6 +200,8 @@
 
     renderText(page);
 
+    stopSpeech();
+
     el.pageIndicator.textContent = "第 " + (currentPage + 1) + " / " + currentBook.pages.length + " 页";
     el.prevBtn.disabled = currentPage === 0;
     el.nextBtn.disabled = currentPage === currentBook.pages.length - 1;
@@ -157,11 +229,15 @@
       currentBook = book;
       currentPage = loadProgress(book.id, book.pages.length);
       el.bookTitle.textContent = book.title;
+      document.getElementById("reader-view").classList.toggle("lang-en", isEnglishBook(book));
       renderPage();
     },
     close: function () {
       currentBook = null;
       pageImageToken++;
+      stopSpeech();
+      var view = document.getElementById("reader-view");
+      if (view) view.classList.remove("lang-en");
       clearPageImage();
     }
   };
@@ -180,6 +256,10 @@
     el.prevBtn.addEventListener("click", function () { goto(-1); });
     el.nextBtn.addEventListener("click", function () { goto(1); });
     el.firstPageBtn.addEventListener("click", gotoFirst);
+
+    if (window.speechSynthesis) {
+      window.speechSynthesis.getVoices();
+    }
 
     document.addEventListener("keydown", function (e) {
       if (!currentBook) return;
