@@ -4,6 +4,7 @@
 :root {
   --bg: #fdf6e9;
   --card: #ffffff;
+  --paper: #efe4cc;
   --primary: #ff8c42;
   --primary-soft: #ffe3c9;
   --text: #4a3b2a;
@@ -251,11 +252,12 @@ html, body {
   align-items: center;
   justify-content: space-between;
   padding: 0.25rem 1.4rem 0.4rem;
+  background: transparent;
 }
 
 .nav-btn {
   border: none;
-  background: #fff8ee;
+  background: #f4ead8;
   color: var(--primary);
   font-size: 1.7rem;
   line-height: 1;
@@ -285,7 +287,11 @@ html, body {
 
 .page-content {
   flex: 1;
-  background: linear-gradient(180deg, #f6eee0 0%, #faf6ee 42%, #ffffff 72%);
+  /* 电子书背板：整块均匀磨砂米色，避免图文之间跳到白色 */
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0.52 0 0 0 0 0.42 0 0 0 0 0.26 0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 180px 180px;
+  background-repeat: repeat;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   display: flex;
@@ -310,8 +316,8 @@ html, body {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 1.4rem;
-  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #ffffff 100%);
+  height: 1.6rem;
+  background: linear-gradient(180deg, rgba(239, 228, 204, 0) 0%, var(--paper) 100%);
   pointer-events: none;
 }
 .page-image {
@@ -328,6 +334,7 @@ html, body {
 .page-text {
   flex: 0 0 auto;
   padding: 1.8rem 1.6rem 1.4rem;
+  background: transparent;
   font-family: var(--reading-font);
   /* 字号随屏宽自适应，保证 iPad / 手机上整段文字一屏内完整可见 */
   font-size: clamp(1.4rem, 2.2vw + 0.8rem, 2rem);
@@ -344,10 +351,23 @@ body[data-fontsize="xlarge"] .page-text {
   .page-content {
     display: grid;
     grid-template: "img text" 1fr "nav text" auto / 52% 48%;
-    background: linear-gradient(90deg, #f6eee0 0%, #faf6ee 46%, #ffffff 78%);
     position: relative;
   }
-  .page-image-wrap { grid-area: img; min-width: 0; min-height: 0; }
+  .page-image-wrap {
+    grid-area: img;
+    min-width: 0;
+    min-height: 0;
+    box-shadow: inset 0 -1.2rem 1rem -0.5rem var(--paper);
+  }
+  .page-image-wrap::after {
+    height: auto;
+    width: 1.6rem;
+    left: auto;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(239, 228, 204, 0) 0%, var(--paper) 100%);
+  }
   .page-nav {
     grid-area: nav;
     position: static;
