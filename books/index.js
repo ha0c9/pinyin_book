@@ -18,7 +18,8 @@ window.loadBooks([
     books: [
       "books/dong-wu-wang-guo-kai-da-hui/book.js",
       "books/wu-yi-he-shui-ta/book.js",
-      "books/tai-feng-bai-hai-tun/book.js"
+      "books/tai-feng-bai-hai-tun/book.js",
+      "books/dong-wu-cheng-da-jiu-yuan/book.js"
     ]
   },
   {
