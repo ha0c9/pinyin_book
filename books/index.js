@@ -55,5 +55,19 @@ window.loadBooks([
     books: [
       "books/where-is-kitty/book.js"
     ]
+  },
+  {
+    id: "study",
+    name: "学习卡片",
+    hint: "可以打印的练习表。点开后按「打印成 A4」，用普通 A4 纸就能打出来。",
+    books: [],
+    links: [
+      {
+        title: "乘法口诀表",
+        href: "print/cheng-fa-kou-jue.html",
+        cover: "print/cover.webp",
+        meta: "A4 打印 · 二年级"
+      }
+    ]
   }
 ]);

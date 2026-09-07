@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>乘法口诀表 · A4 打印</title>
+<style>
+  :root {
+    --ink: #3a2a18;
+    --muted: #8a7358;
+    --paper: #fffdf7;
+    --line: #e8d5b8;
+    --primary: #ff8c42;
+    --r1: #fde4de;
+    --r2: #ffe1c4;
+    --r3: #fff1b8;
+    --r4: #d7f0cc;
+    --r5: #c8eee8;
+    --r6: #cfe4ff;
+    --r7: #d9dcfb;
+    --r8: #ead4fb;
+    --r9: #f8d4e7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #f4ead8;
+    color: var(--ink);
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  }
+  button { font-family: inherit; }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 0.8rem;
+    padding: 0.7rem 1rem;
+    background: #fdf6e9;
+    border-bottom: 1px solid #ead9bf;
+  }
+  .toolbar a, .toolbar button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0.35rem 0.95rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+  }
+  .toolbar a {
+    background: #fff;
+    color: var(--ink);
+    box-shadow: 0 1px 4px rgba(120, 90, 40, 0.12);
+  }
+  .toolbar .print-btn {
+    background: var(--primary);
+    color: #fff;
+  }
+  .toolbar .hint {
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 500;
+    flex: 1 1 16rem;
+  }
+
+  .preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+    padding: 1.2rem 0.8rem 2.4rem;
+    overflow-x: auto;
+  }
+
+  .sheet {
+    width: 210mm;
+    height: 297mm;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 8mm 7.5mm 7mm;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 28px rgba(90, 60, 20, 0.16);
+    overflow: hidden;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sheet-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 8mm;
+    padding-bottom: 3.2mm;
+    border-bottom: 0.7mm solid #f0c48a;
+    margin-bottom: 3.5mm;
+  }
+  .sheet-head h1 {
+    font-size: 7.2mm;
+    letter-spacing: 0.18em;
+    line-height: 1.1;
+  }
+  .sheet-head .sub {
+    font-size: 3.3mm;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-top: 1.2mm;
+  }
+  .badges {
+    display: flex;
+    gap: 2mm;
+    flex-shrink: 0;
+    padding-bottom: 0.6mm;
+  }
+  .badge {
+    font-size: 2.6mm;
+    font-weight: 700;
+    padding: 1mm 2.2mm;
+    border-radius: 99px;
+    white-space: nowrap;
+  }
+  .badge-up { background: #d7f0cc; }
+  .badge-down { background: #ead4fb; }
+
+  .koujue {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.7mm;
+    min-height: 0;
+  }
+  .koujue-row {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 18mm 1fr;
+    gap: 2mm;
+    min-height: 0;
+  }
+  .row-label {
+    border-radius: 2.2mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1mm 0.4mm;
+    border: 0.35mm solid rgba(80, 50, 20, 0.08);
+  }
+  .row-label .n {
+    font-size: 6.2mm;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .row-label .t {
+    font-size: 2.35mm;
+    margin-top: 0.7mm;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .row-label .term {
+    font-size: 2.1mm;
+    margin-top: 0.5mm;
+    opacity: 0.8;
+  }
+  .row-cells {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 1.2mm;
+    min-width: 0;
+  }
+  .cell {
+    border-radius: 1.8mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4mm 0.3mm;
+    border: 0.3mm solid rgba(80, 50, 20, 0.08);
+    min-width: 0;
+  }
+  .cell .eq {
+    font-size: 3.15mm;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+  }
+  .cell .rhyme {
+    font-size: 2.85mm;
+    font-weight: 700;
+    margin-top: 0.7mm;
+    letter-spacing: 0.02em;
+    line-height: 1.15;
+    white-space: nowrap;
+  }
+
+  .c1 .row-label, .c1 .cell { background: var(--r1); }
+  .c2 .row-label, .c2 .cell { background: var(--r2); }
+  .c3 .row-label, .c3 .cell { background: var(--r3); }
+  .c4 .row-label, .c4 .cell { background: var(--r4); }
+  .c5 .row-label, .c5 .cell { background: var(--r5); }
+  .c6 .row-label, .c6 .cell { background: var(--r6); }
+  .c7 .row-label, .c7 .cell { background: var(--r7); }
+  .c8 .row-label, .c8 .cell { background: var(--r8); }
+  .c9 .row-label, .c9 .cell { background: var(--r9); }
+
+  .sheet-foot {
+    margin-top: 3mm;
+    padding-top: 2.4mm;
+    border-top: 0.35mm dashed #e2cba8;
+    font-size: 2.7mm;
+    color: #5c4a36;
+    line-height: 1.55;
+    display: flex;
+    justify-content: space-between;
+    gap: 6mm;
+  }
+  .sheet-foot strong { color: var(--ink); }
+
+  .grid-wrap {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  table.times {
+    width: 100%;
+    height: 100%;
+    border-collapse: separate;
+    border-spacing: 1.3mm;
+    table-layout: fixed;
+  }
+  table.times th, table.times td {
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 1.8mm;
+    font-weight: 800;
+  }
+  table.times th {
+    background: #f3e6d0;
+    font-size: 4.4mm;
+    color: #6a5136;
+  }
+  table.times td {
+    font-size: 5.6mm;
+    border: 0.3mm solid rgba(80, 50, 20, 0.08);
+    font-variant-numeric: tabular-nums;
+  }
+  table.times td .mini {
+    display: block;
+    font-size: 2.3mm;
+    font-weight: 700;
+    margin-top: 0.6mm;
+    letter-spacing: 0;
+    opacity: 0.85;
+  }
+  table.times td.square {
+    outline: 0.45mm solid rgba(255, 140, 66, 0.7);
+    outline-offset: -0.45mm;
+  }
+  td.t1 { background: var(--r1); }
+  td.t2 { background: var(--r2); }
+  td.t3 { background: var(--r3); }
+  td.t4 { background: var(--r4); }
+  td.t5 { background: var(--r5); }
+  td.t6 { background: var(--r6); }
+  td.t7 { background: var(--r7); }
+  td.t8 { background: var(--r8); }
+  td.t9 { background: var(--r9); }
+  td.lower {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 1.6mm,
+      rgba(255,255,255,0.35) 1.6mm,
+      rgba(255,255,255,0.35) 3.2mm
+    );
+  }
+
+  .legend {
+    display: flex;
+    gap: 5mm;
+    font-size: 2.7mm;
+    color: #5c4a36;
+    margin-bottom: 2mm;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 1.4mm; }
+  .swatch {
+    width: 4.2mm;
+    height: 4.2mm;
+    border-radius: 1mm;
+    border: 0.3mm solid rgba(80,50,20,0.12);
+    display: inline-block;
+  }
+  .swatch-square { outline: 0.4mm solid var(--primary); outline-offset: -0.4mm; background: var(--r5); }
+  .swatch-lower {
+    background: var(--r7);
+    background-image: repeating-linear-gradient(-45deg, transparent, transparent 1mm, rgba(255,255,255,0.5) 1mm, rgba(255,255,255,0.5) 2mm);
+  }
+
+  @media screen and (max-width: 900px) {
+    .preview { transform-origin: top center; }
+    .sheet { box-shadow: 0 6px 16px rgba(90, 60, 20, 0.14); }
+  }
+
+  @page { size: A4 portrait; margin: 0; }
+  @media print {
+    html, body { background: #fff; }
+    .toolbar, .preview { padding: 0; gap: 0; }
+    .toolbar { display: none !important; }
+    .sheet {
+      box-shadow: none;
+      page-break-after: always;
+      break-after: page;
+    }
+    .sheet:last-child { page-break-after: auto; break-after: auto; }
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <a href="../index.html">🏠 回到书架</a>
+    <button type="button" class="print-btn" id="print-btn">打印成 A4</button>
+    <p class="hint">共 2 张 A4：第 1 张是要背的口诀，第 2 张是查得数的格子。打印时请勾选「背景图形」，彩色才会打出来。</p>
+  </div>
+
+  <div class="preview">
+    <section class="sheet" id="sheet-koujue" aria-label="乘法口诀表">
+      <header class="sheet-head">
+        <div>
+          <h1>乘法口诀表</h1>
+          <p class="sub">小学二年级 · 表内乘法 · 小九九（45 句）</p>
+        </div>
+        <div class="badges">
+          <span class="badge badge-up">上册：2～6 的口诀</span>
+          <span class="badge badge-down">下册：7～9 的口诀</span>
+        </div>
+      </header>
+      <div class="koujue" id="koujue"></div>
+      <footer class="sheet-foot">
+        <p>读法：得数不够十，中间加「得」，比如 <strong>二二得四</strong>；满十就直接读，比如 <strong>二五一十</strong>、<strong>三四十二</strong>。</p>
+        <p>小窍门：两个数换个位置，得数一样。3×7 和 7×3 都是 21。</p>
+      </footer>
+    </section>
+
+    <section class="sheet" id="sheet-grid" aria-label="九九乘法表">
+      <header class="sheet-head">
+        <div>
+          <h1>九九乘法表</h1>
+          <p class="sub">左边的数 × 上边的数 = 格子里的得数</p>
+        </div>
+        <div class="legend">
+          <span><i class="swatch swatch-square"></i> 相同的数相乘</span>
+          <span><i class="swatch swatch-lower"></i> 反过来也能查</span>
+        </div>
+      </header>
+      <div class="grid-wrap" id="grid-wrap"></div>
+      <footer class="sheet-foot">
+        <p>有斜线的格子和没有斜线的格子，得数是同一对口诀。例如 4×9 和 9×4，都读 <strong>四九三十六</strong>。</p>
+        <p>先把上册 2～6 背熟，再记下册 7、8、9，就会越背越快。</p>
+      </footer>
+    </section>
+  </div>
+
+<script>
+(function () {
+  var CN = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+  var RHYMES = [
+    ["一一得一"],
+    ["一二得二", "二二得四"],
+    ["一三得三", "二三得六", "三三得九"],
+    ["一四得四", "二四得八", "三四十二", "四四十六"],
+    ["一五得五", "二五一十", "三五十五", "四五二十", "五五二十五"],
+    ["一六得六", "二六十二", "三六十八", "四六二十四", "五六三十", "六六三十六"],
+    ["一七得七", "二七十四", "三七二十一", "四七二十八", "五七三十五", "六七四十二", "七七四十九"],
+    ["一八得八", "二八十六", "三八二十四", "四八三十二", "五八四十", "六八四十八", "七八五十六", "八八六十四"],
+    ["一九得九", "二九十八", "三九二十七", "四九三十六", "五九四十五", "六九五十四", "七九六十三", "八九七十二", "九九八十一"]
+  ];
+
+  function rhymeFor(a, b) {
+    var x = Math.min(a, b);
+    var y = Math.max(a, b);
+    return RHYMES[y - 1][x - 1];
+  }
+
+  function termLabel(n) {
+    if (n >= 2 && n <= 6) return "上册";
+    if (n >= 7) return "下册";
+    return "";
+  }
+
+  function renderKoujue() {
+    var root = document.getElementById("koujue");
+    var html = "";
+    for (var n = 1; n <= 9; n++) {
+      html += '<div class="koujue-row c' + n + '">';
+      html += '<div class="row-label"><span class="n">' + n + '</span>';
+      html += '<span class="t">' + CN[n] + '的口诀</span>';
+      var term = termLabel(n);
+      if (term) html += '<span class="term">' + term + '</span>';
+      html += '</div><div class="row-cells">';
+      for (var a = 1; a <= n; a++) {
+        var p = a * n;
+        html += '<div class="cell"><span class="eq">' + a + "×" + n + "=" + p +
+          '</span><span class="rhyme">' + RHYMES[n - 1][a - 1] + "</span></div>";
+      }
+      html += "</div></div>";
+    }
+    root.innerHTML = html;
+  }
+
+  function renderGrid() {
+    var html = '<table class="times" aria-label="九九乘法表格子">';
+    html += "<thead><tr><th>×</th>";
+    var c, r;
+    for (c = 1; c <= 9; c++) html += "<th>" + c + "</th>";
+    html += "</tr></thead><tbody>";
+    for (r = 1; r <= 9; r++) {
+      html += "<tr><th>" + r + "</th>";
+      for (c = 1; c <= 9; c++) {
+        var cls = "t" + r;
+        if (r === c) cls += " square";
+        if (r > c) cls += " lower";
+        html += '<td class="' + cls + '">' + (r * c);
+        html += '<span class="mini">' + rhymeFor(r, c) + "</span></td>";
+      }
+      html += "</tr>";
+    }
+    html += "</tbody></table>";
+    document.getElementById("grid-wrap").innerHTML = html;
+  }
+
+  renderKoujue();
+  renderGrid();
+
+  document.getElementById("print-btn").addEventListener("click", function () {
+    window.print();
+  });
+})();
+</script>
+</body>
+</html>

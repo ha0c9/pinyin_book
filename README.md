@@ -8,7 +8,8 @@
 把整个文件夹拷贝到任何电脑，用浏览器（Chrome / Edge / Safari）**双击打开 `index.html`** 即可，
 无需联网、无需安装任何软件。英文读音使用系统自带的语音（Web Speech），一般也不需要联网。
 
-- 书架页先选分类（AI 故事 / 自编故事 / 水墨中国故事 / 经典童话 / 英文绘本），再点封面开始阅读；
+- 书架页先选分类（AI 故事 / 自编故事 / 水墨中国故事 / 经典童话 / 英文绘本 / 学习卡片），再点封面开始阅读；
+- 「学习卡片」里有可打印的二年级乘法口诀表：点开后点「打印成 A4」，用普通 A4 纸即可（打印时勾选「背景图形」）；
 - 只有当前分类的封面会加载；打开书以后，翻到哪一页才加载那一页的插图；
 - 中文阅读页：点不认识的字，字的上方弹出拼音；英文阅读页：点不认识的单词，上方弹出中文，并朗读该词；
 - 气泡到时自动消失；再点一下该字/单词，气泡立即消失；
@@ -64,6 +65,12 @@
 |---|---|---|
 | Where Is Kitty? | 8 页 | 上海小学二年级词汇。露西找小猫凯蒂，点单词可看中文、听读音 |
 
+**学习卡片**
+
+| 卡片 | 规格 | 简介 |
+|---|---|---|
+| 乘法口诀表 | 2 张 A4 | 小九九 45 句口诀 + 九九格子。上册 2～6、下册 7～9。可直接打印 |
+
 配图为 AI 生成的水彩绘本插画（webp，长边约 800px），可随时用新图同名替换 `books/<故事id>/images/` 下的文件。新图建议先跑 `python3 tools/compress_images.py books/<故事id>/images`，避免手机加载过慢。扁平 SVG 生成器仍保留在 `tools/gen_placeholder_art.py`，作为无模型时的备选。
 
 ## 添加新故事
@@ -88,6 +95,7 @@ js/reader.js          阅读器、点字出拼音 / 点词出中文与读音
 js/settings.js        设置面板（localStorage 持久化）
 books/index.js        书架清单
 books/<故事id>/       每本书：story.json（源文件）、book.js（生成）、images/
+print/                可打印学习卡片（A4 乘法口诀表等）
 tools/make_book.py    中文 story.json → book.js（自动逐字注音 + 一/不变调）
 tools/make_en_book.py 英文 story.json → book.js（按 glossary 逐词中文）
 tools/compress_images.py  把 images/ 里的 webp 压到适合手机加载的大小
