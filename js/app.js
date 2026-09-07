@@ -59,7 +59,8 @@
         id: c.id || ("cat-" + i),
         name: c.name || "未分组",
         hint: c.hint || "",
-        books: c.books || []
+        books: c.books || [],
+        links: c.links || []
       };
     });
   }
