@@ -59,7 +59,8 @@
         id: c.id || ("cat-" + i),
         name: c.name || "未分组",
         hint: c.hint || "",
-        books: c.books || []
+        books: c.books || [],
+        links: c.links || []
       };
     });
   }
@@ -91,7 +92,7 @@
       }
     }
 
-    cat.books.forEach(function (path) {
+    (cat.books || []).forEach(function (path) {
       if (loadedPaths[path]) return;
       loadedPaths[path] = true;
       pending++;
@@ -175,17 +176,62 @@
     }
   }
 
+  function appendLinkCard(grid, link) {
+    var card = document.createElement("a");
+    card.className = "book-card";
+    card.href = link.href;
+    card.setAttribute("aria-label", (link.title || "") + "，打开后可以打印");
+
+    var coverWrap = document.createElement("div");
+    coverWrap.className = "card-cover";
+    if (link.cover) {
+      var img = document.createElement("img");
+      img.alt = link.title || "";
+      img.decoding = "async";
+      img.draggable = false;
+      img.className = "is-loading";
+      img.onload = function () { img.classList.remove("is-loading"); };
+      img.onerror = function () {
+        img.removeAttribute("src");
+        coverWrap.classList.add("no-cover");
+      };
+      img.src = link.cover;
+      coverWrap.appendChild(img);
+    } else {
+      coverWrap.classList.add("no-cover");
+    }
+    card.appendChild(coverWrap);
+
+    var title = document.createElement("div");
+    title.className = "card-title";
+    title.textContent = link.title || "学习卡片";
+    card.appendChild(title);
+
+    var meta = document.createElement("div");
+    meta.className = "card-meta";
+    meta.textContent = link.meta || "可打印";
+    card.appendChild(meta);
+
+    grid.appendChild(card);
+  }
+
   function renderShelf(cat) {
     var grid = document.getElementById("shelf-grid");
     clearCoverLoads(grid);
 
-    if (!cat || cat.books.length === 0) {
+    var books = (cat && cat.books) || [];
+    var links = (cat && cat.links) || [];
+    if (!cat || (books.length === 0 && links.length === 0)) {
       grid.innerHTML = '<p class="shelf-empty">这一架还是空的，请按 README 的说明添加故事。</p>';
       return;
     }
 
+    links.forEach(function (link) {
+      appendLinkCard(grid, link);
+    });
+
     var shown = 0;
-    cat.books.forEach(function (path) {
+    books.forEach(function (path) {
       var book = booksByPath[path];
       if (!book) return;
       shown++;
@@ -231,7 +277,7 @@
       grid.appendChild(card);
     });
 
-    if (shown === 0) {
+    if (shown === 0 && links.length === 0) {
       grid.innerHTML = '<p class="shelf-empty">这一架的故事还在路上，请稍后再看。</p>';
     }
   }
@@ -247,7 +293,7 @@
 
     var grid = document.getElementById("shelf-grid");
     clearCoverLoads(grid);
-    renderSkeleton(grid, Math.min(cat.books.length || 1, 4));
+    renderSkeleton(grid, Math.min(((cat.books || []).length + (cat.links || []).length) || 1, 4));
 
     var requested = cat.id;
     loadCategoryScripts(cat, function () {

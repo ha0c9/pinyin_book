@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>课程表 Class Schedule · A4 打印</title>
+<style>
+  :root {
+    --ink: #3a2a18;
+    --muted: #8a7358;
+    --paper: #fffdf7;
+    --primary: #ff8c42;
+    --line: #e4d2b4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #f4ead8;
+    color: var(--ink);
+    font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  }
+  button { font-family: inherit; }
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 0.8rem;
+    padding: 0.7rem 1rem;
+    background: #fdf6e9;
+    border-bottom: 1px solid #ead9bf;
+  }
+  .toolbar a, .toolbar button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0.35rem 0.95rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+  }
+  .toolbar a {
+    background: #fff;
+    color: var(--ink);
+    box-shadow: 0 1px 4px rgba(120, 90, 40, 0.12);
+  }
+  .toolbar .print-btn { background: var(--primary); color: #fff; }
+  .toolbar .hint {
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 500;
+    flex: 1 1 16rem;
+  }
+
+  .preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.2rem 0.8rem 2.4rem;
+    overflow-x: auto;
+  }
+
+  .sheet {
+    width: 210mm;
+    height: 297mm;
+    background: var(--paper);
+    padding: 9mm 8mm 8mm;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 28px rgba(90, 60, 20, 0.16);
+    overflow: hidden;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sheet-head { text-align: center; margin-bottom: 4mm; }
+  .sheet-head h1 {
+    font-size: 8mm;
+    letter-spacing: 0.22em;
+    line-height: 1.1;
+  }
+  .sheet-head .en {
+    font-size: 4.2mm;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-top: 1.2mm;
+    font-weight: 700;
+  }
+  .meta-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 4mm;
+    margin-top: 3.5mm;
+    font-size: 3.3mm;
+    color: #5c4a36;
+  }
+  .meta-line .blank {
+    display: inline-block;
+    min-width: 28mm;
+    border-bottom: 0.35mm solid #c9b08c;
+    margin-left: 1.5mm;
+  }
+
+  table.tt {
+    width: 100%;
+    flex: 1;
+    border-collapse: separate;
+    border-spacing: 1.4mm;
+    table-layout: fixed;
+  }
+  table.tt th, table.tt td {
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 2mm;
+    border: 0.3mm solid rgba(80, 50, 20, 0.1);
+  }
+  table.tt thead th {
+    background: #f3e6d0;
+    height: 14mm;
+    padding: 1mm;
+  }
+  table.tt .day-zh {
+    display: block;
+    font-size: 4.1mm;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+  table.tt .day-en {
+    display: block;
+    font-size: 2.7mm;
+    color: #6a5136;
+    margin-top: 0.6mm;
+    font-weight: 700;
+  }
+  .corner {
+    background: #f7edd8 !important;
+    font-size: 2.6mm;
+    font-weight: 700;
+    color: #6a5136;
+    line-height: 1.35;
+  }
+  .block {
+    width: 11mm;
+    font-size: 3.4mm;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    background: #f3e6d0;
+  }
+  .block .en {
+    writing-mode: horizontal-tb;
+    font-size: 2.2mm;
+    letter-spacing: 0;
+    margin-top: 1.4mm;
+    color: #6a5136;
+    font-weight: 700;
+  }
+  .period {
+    width: 16mm;
+    background: #faf3e4;
+    padding: 0.6mm;
+  }
+  .period .n {
+    display: block;
+    font-size: 4.4mm;
+    font-weight: 800;
+    line-height: 1;
+  }
+  .period .en {
+    display: block;
+    font-size: 2.2mm;
+    color: #6a5136;
+    margin-top: 0.7mm;
+    font-weight: 700;
+  }
+  .sub {
+    padding: 1.2mm 1mm;
+  }
+  .sub .zh {
+    display: block;
+    font-size: 4.5mm;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+  }
+  .sub .en {
+    display: block;
+    font-size: 2.55mm;
+    margin-top: 0.9mm;
+    font-weight: 700;
+    color: #4f3d2c;
+    letter-spacing: 0.02em;
+  }
+  .sub.empty {
+    background: repeating-linear-gradient(
+      -45deg,
+      #fffdf7,
+      #fffdf7 1.6mm,
+      #f4ead8 1.6mm,
+      #f4ead8 3.2mm
+    );
+  }
+  .sub.empty .zh { color: #b39a7c; font-weight: 700; font-size: 3.4mm; }
+
+  .lunch td {
+    background: #fff1d4;
+    font-size: 3.3mm;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    height: 9mm;
+    color: #7a5a32;
+  }
+
+  .yuwen { background: #ffe1c4; }
+  .shuxue { background: #cfe4ff; }
+  .yingyu { background: #ead4fb; }
+  .tiyu { background: #d7f0cc; }
+  .yinyue { background: #f8d4e7; }
+  .meishu { background: #fff1b8; }
+  .kexue { background: #c8eee8; }
+  .daode { background: #d9dcfb; }
+  .zonghe { background: #fde4de; }
+  .xiaoben { background: #e7ddcf; }
+  .laodong { background: #f0e0c4; }
+
+  .legend {
+    margin-top: 3.2mm;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5mm 2.4mm;
+    font-size: 2.55mm;
+    color: #5c4a36;
+  }
+  .legend i {
+    display: inline-block;
+    width: 3.6mm;
+    height: 3.6mm;
+    border-radius: 0.8mm;
+    vertical-align: -0.6mm;
+    margin-right: 1mm;
+    border: 0.25mm solid rgba(80,50,20,0.12);
+  }
+  .foot {
+    margin-top: 2.2mm;
+    font-size: 2.5mm;
+    color: #8a7358;
+    text-align: center;
+  }
+
+  @page { size: A4 portrait; margin: 0; }
+  @media print {
+    html, body { background: #fff; }
+    .toolbar { display: none !important; }
+    .preview { padding: 0; }
+    .sheet { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="toolbar">
+    <a href="../index.html">🏠 回到书架</a>
+    <button type="button" class="print-btn" id="print-btn">打印成 A4</button>
+    <p class="hint">1 张 A4，中英对照。打印时请勾选「背景图形」，彩色科目才会打出来。</p>
+  </div>
+
+  <div class="preview">
+    <section class="sheet" aria-label="课程表 Class Schedule">
+      <header class="sheet-head">
+        <h1>课程表</h1>
+        <p class="en">Class Schedule</p>
+        <div class="meta-line">
+          <span>姓名 Name<span class="blank"></span></span>
+          <span>班级 Class<span class="blank"></span></span>
+          <span>二年级 Grade 2</span>
+        </div>
+      </header>
+
+      <table class="tt">
+        <thead>
+          <tr>
+            <th class="corner" colspan="2">节次<br>Period</th>
+            <th><span class="day-zh">星期一</span><span class="day-en">Monday</span></th>
+            <th><span class="day-zh">星期二</span><span class="day-en">Tuesday</span></th>
+            <th><span class="day-zh">星期三</span><span class="day-en">Wednesday</span></th>
+            <th><span class="day-zh">星期四</span><span class="day-en">Thursday</span></th>
+            <th><span class="day-zh">星期五</span><span class="day-en">Friday</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="block" rowspan="4">上午<span class="en">AM</span></td>
+            <td class="period"><span class="n">1</span><span class="en">Period 1</span></td>
+            <td class="sub yuwen"><span class="zh">语文</span><span class="en">Chinese</span></td>
+            <td class="sub yinyue"><span class="zh">唱游</span><span class="en">Singing Games</span></td>
+            <td class="sub zonghe"><span class="zh">综合实践</span><span class="en">Integrated</span></td>
+            <td class="sub yuwen"><span class="zh">语文</span><span class="en">Chinese</span></td>
+            <td class="sub yuwen"><span class="zh">语文</span><span class="en">Chinese</span></td>
+          </tr>
+          <tr>
+            <td class="period"><span class="n">2</span><span class="en">Period 2</span></td>
+            <td class="sub shuxue"><span class="zh">数学</span><span class="en">Math</span></td>
+            <td class="sub daode"><span class="zh">道德与法治</span><span class="en">Moral Ed.</span></td>
+            <td class="sub yuwen"><span class="zh">语文</span><span class="en">Chinese</span></td>
+            <td class="sub yuwen"><span class="zh">语文</span><span class="en">Chinese</span></td>
+            <td class="sub xiaoben"><span class="zh">校本</span><span class="en">School-based</span></td>
+          </tr>
+          <tr>
+            <td class="period"><span class="n">3</span><span class="en">Period 3</span></td>
+            <td class="sub yingyu"><span class="zh">英语</span><span class="en">English</span></td>
+            <td class="sub tiyu"><span class="zh">体育</span><span class="en">P.E.</span></td>
+            <td class="sub meishu"><span class="zh">美术</span><span class="en">Art</span></td>
+            <td class="sub yingyu"><span class="zh">英语</span><span class="en">English</span></td>
+            <td class="sub tiyu"><span class="zh">体育</span><span class="en">P.E.</span></td>
+          </tr>
+          <tr>
+            <td class="period"><span class="n">4</span><span class="en">Period 4</span></td>
+            <td class="sub tiyu"><span class="zh">体育</span><span class="en">P.E.</span></td>
+            <td class="sub shuxue"><span class="zh">数学</span><span class="en">Math</span></td>
+            <td class="sub tiyu"><span class="zh">体育</span><span class="en">P.E.</span></td>
+            <td class="sub shuxue"><span class="zh">数学</span><span class="en">Math</span></td>
+            <td class="sub laodong"><span class="zh">劳动</span><span class="en">Labor</span></td>
+          </tr>
+          <tr class="lunch">
+            <td colspan="7">午休 · Lunch Break</td>
+          </tr>
+          <tr>
+            <td class="block" rowspan="2">下午<span class="en">PM</span></td>
+            <td class="period"><span class="n">5</span><span class="en">Period 5</span></td>
+            <td class="sub yuwen"><span class="zh">语文</span><span class="en">Chinese</span></td>
+            <td class="sub yuwen"><span class="zh">语文</span><span class="en">Chinese</span></td>
+            <td class="sub xiaoben"><span class="zh">校本</span><span class="en">School-based</span></td>
+            <td class="sub yinyue"><span class="zh">唱游</span><span class="en">Singing Games</span></td>
+            <td class="sub meishu"><span class="zh">美术</span><span class="en">Art</span></td>
+          </tr>
+          <tr>
+            <td class="period"><span class="n">6</span><span class="en">Period 6</span></td>
+            <td class="sub kexue"><span class="zh">科学</span><span class="en">Science</span></td>
+            <td class="sub kexue"><span class="zh">科学</span><span class="en">Science</span></td>
+            <td class="sub daode"><span class="zh">道德与法治</span><span class="en">Moral Ed.</span></td>
+            <td class="sub tiyu"><span class="zh">体育</span><span class="en">P.E.</span></td>
+            <td class="sub empty"><span class="zh">—</span><span class="en">Free</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="legend" aria-label="科目图例">
+        <span><i class="yuwen"></i>语文 Chinese</span>
+        <span><i class="shuxue"></i>数学 Math</span>
+        <span><i class="yingyu"></i>英语 English</span>
+        <span><i class="tiyu"></i>体育 P.E.</span>
+        <span><i class="yinyue"></i>唱游 Singing Games</span>
+        <span><i class="meishu"></i>美术 Art</span>
+        <span><i class="kexue"></i>科学 Science</span>
+        <span><i class="daode"></i>道德与法治 Moral Ed.</span>
+        <span><i class="zonghe"></i>综合实践 Integrated</span>
+        <span><i class="xiaoben"></i>校本 School-based</span>
+        <span><i class="laodong"></i>劳动 Labor</span>
+      </div>
+      <p class="foot">按家里手写课表整理 · 手写里的「唱 / 道 / 综 / 美 / 校 / 劳」已写成唱游、道德与法治、综合实践、美术、校本、劳动</p>
+    </section>
+  </div>
+
+  <script>
+    document.getElementById("print-btn").addEventListener("click", function () {
+      window.print();
+    });
+  </script>
+</body>
+</html>

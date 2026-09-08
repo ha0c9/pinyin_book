@@ -128,6 +128,9 @@ html, body {
   padding: 0;
   touch-action: manipulation;
   width: 100%;
+  color: inherit;
+  text-decoration: none;
+  display: block;
 }
 @media (hover: hover) and (pointer: fine) {
   .book-card:hover { transform: translateY(-6px); }
