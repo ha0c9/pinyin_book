@@ -67,6 +67,12 @@ window.loadBooks([
         href: "print/cheng-fa-kou-jue.html",
         cover: "print/cover.webp",
         meta: "A4 打印 · 二年级"
+      },
+      {
+        title: "课程表",
+        href: "print/ke-cheng-biao.html",
+        cover: "print/ke-cheng-biao-cover.webp",
+        meta: "A4 打印 · 中英对照"
       }
     ]
   }
