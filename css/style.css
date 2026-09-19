@@ -346,6 +346,18 @@ body[data-fontsize="xlarge"] .page-text {
   font-size: clamp(1.7rem, 2.6vw + 1rem, 2.5rem);
 }
 
+/* 一页里多个自然段：换行 + 首行缩进，和绘本分段一致 */
+.story-para {
+  text-indent: 2em;
+  text-align: justify;
+}
+.story-para + .story-para {
+  margin-top: 0.35em;
+}
+.text-inner {
+  width: 100%;
+}
+
 /* 横屏（含 iPad 横版）：左图右文 */
 @media (min-aspect-ratio: 5/4) and (min-width: 800px) {
   .page-content {

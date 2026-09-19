@@ -96,25 +96,45 @@
   }
 
   /* ---- 页面渲染 ---- */
+  function appendChineseChar(parent, ch, py) {
+    var node = document.createElement("span");
+    if (!py) {
+      node.className = "char punct";
+      node.textContent = ch;
+    } else {
+      node.className = "char";
+      node.textContent = ch;
+      bindTap(node, py, "");
+    }
+    parent.appendChild(node);
+  }
+
   function renderChineseText(page) {
     var inner = document.createElement("div");
     inner.className = "text-inner";
     var chars = Array.from(page.text);
     var pinyins = page.pinyin || [];
+    var hasBreaks = page.text.indexOf("\n") !== -1;
 
+    if (!hasBreaks) {
+      chars.forEach(function (ch, i) {
+        appendChineseChar(inner, ch, pinyins[i] || "");
+      });
+      return inner;
+    }
+
+    var para = document.createElement("div");
+    para.className = "story-para";
     chars.forEach(function (ch, i) {
-      var py = pinyins[i] || "";
-      var node = document.createElement("span");
-      if (!py) {
-        node.className = "char punct";
-        node.textContent = ch;
-      } else {
-        node.className = "char";
-        node.textContent = ch;
-        bindTap(node, py, "");
+      if (ch === "\n") {
+        inner.appendChild(para);
+        para = document.createElement("div");
+        para.className = "story-para";
+        return;
       }
-      inner.appendChild(node);
+      appendChineseChar(para, ch, pinyins[i] || "");
     });
+    inner.appendChild(para);
     return inner;
   }
 
