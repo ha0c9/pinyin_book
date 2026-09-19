@@ -6,7 +6,7 @@ window.registerBook({
   "pages": [
     {
       "image": "images/p1.webp",
-      "text": "池塘边的小泥洞里面住着小螃蟹。",
+      "text": "池塘边的小泥洞里面住着小螃蟹。小螃蟹坐在洞口晒太阳。“真舒服啊，”小螃蟹想，“不知道她醒了没有？她总是喜欢在中午睡一会儿。”",
       "pinyin": [
         "chí",
         "táng",
@@ -22,13 +22,7 @@ window.registerBook({
         "xiǎo",
         "páng",
         "xiè",
-        ""
-      ]
-    },
-    {
-      "image": "images/p2.webp",
-      "text": "小螃蟹坐在洞口晒太阳。",
-      "pinyin": [
+        "",
         "xiǎo",
         "páng",
         "xiè",
@@ -39,13 +33,7 @@ window.registerBook({
         "shài",
         "tài",
         "yáng",
-        ""
-      ]
-    },
-    {
-      "image": "images/p3.webp",
-      "text": "“真舒服啊，”小螃蟹想，“不知道她醒了没有？她总是喜欢在中午睡一会儿。”",
-      "pinyin": [
+        "",
         "",
         "zhēn",
         "shū",
@@ -85,8 +73,8 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p4.webp",
-      "text": "小螃蟹举起他的大钳子，在墙上敲了两下：“咚，咚。”",
+      "image": "images/p2.webp",
+      "text": "小螃蟹举起他的大钳子，在墙上敲了两下：“咚，咚。”隔壁也传来了声音：“笃，笃。”",
       "pinyin": [
         "xiǎo",
         "páng",
@@ -112,13 +100,7 @@ window.registerBook({
         "",
         "dōng",
         "",
-        ""
-      ]
-    },
-    {
-      "image": "images/p5.webp",
-      "text": "隔壁也传来了声音：“笃，笃。”",
-      "pinyin": [
+        "",
         "gé",
         "bì",
         "yě",
@@ -137,7 +119,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p6.webp",
+      "image": "images/p3.webp",
       "text": "那是住在隔壁的小青蟹敲的。她是小螃蟹的邻居，她的小泥洞和小螃蟹的小泥洞是并排着的。",
       "pinyin": [
         "nà",
@@ -184,8 +166,8 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p7.webp",
-      "text": "小青蟹爬到洞口来了，用钳子蘸着洞口草叶上的水珠洗脸。",
+      "image": "images/p4.webp",
+      "text": "小青蟹爬到洞口来了，用钳子蘸着洞口草叶上的水珠洗脸。小青蟹长得很美。她的颜色那么青，青得像蓝天。她的钳子很小，只有小螃蟹的一半儿大。",
       "pinyin": [
         "xiǎo",
         "qīng",
@@ -212,13 +194,7 @@ window.registerBook({
         "zhū",
         "xǐ",
         "liǎn",
-        ""
-      ]
-    },
-    {
-      "image": "images/p8.webp",
-      "text": "小青蟹长得很美。她的颜色那么青，青得像蓝天。她的钳子很小，只有小螃蟹的一半儿大。",
-      "pinyin": [
+        "",
         "xiǎo",
         "qīng",
         "xiè",
@@ -262,8 +238,8 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p9.webp",
-      "text": "小螃蟹很喜欢她，总是像大哥哥一样照顾她。",
+      "image": "images/p5.webp",
+      "text": "小螃蟹很喜欢她，总是像大哥哥一样照顾她。“快晒会儿太阳吧，”小螃蟹说，“多好的太阳啊。”“嗯。”小青蟹很乖地说，和小螃蟹一样，在洞口坐着。",
       "pinyin": [
         "xiǎo",
         "páng",
@@ -284,13 +260,7 @@ window.registerBook({
         "zhào",
         "gù",
         "tā",
-        ""
-      ]
-    },
-    {
-      "image": "images/p10.webp",
-      "text": "“快晒会儿太阳吧，”小螃蟹说，“多好的太阳啊。”",
-      "pinyin": [
+        "",
         "",
         "kuài",
         "shài",
@@ -314,13 +284,7 @@ window.registerBook({
         "yáng",
         "a",
         "",
-        ""
-      ]
-    },
-    {
-      "image": "images/p11.webp",
-      "text": "“嗯。”小青蟹很乖地说，和小螃蟹一样，在洞口坐着。",
-      "pinyin": [
+        "",
         "",
         "ǹg",
         "",
@@ -349,8 +313,8 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p12.webp",
-      "text": "太阳就照着他们两个。",
+      "image": "images/p6.webp",
+      "text": "太阳就照着他们两个。小螃蟹睡着了，小青蟹却在想：干吗每天都要晒太阳呢？傻乎乎的……她爬过来，用小钳子轻轻地拉拉他。“小螃蟹，我要走了。”小青蟹说。",
       "pinyin": [
         "tài",
         "yáng",
@@ -361,13 +325,7 @@ window.registerBook({
         "men",
         "liǎng",
         "gè",
-        ""
-      ]
-    },
-    {
-      "image": "images/p13.webp",
-      "text": "小螃蟹睡着了，小青蟹却在想：干吗每天都要晒太阳呢？傻乎乎的……",
-      "pinyin": [
+        "",
         "xiǎo",
         "páng",
         "xiè",
@@ -398,13 +356,7 @@ window.registerBook({
         "hū",
         "de",
         "",
-        ""
-      ]
-    },
-    {
-      "image": "images/p14.webp",
-      "text": "她爬过来，用小钳子轻轻地拉拉他。",
-      "pinyin": [
+        "",
         "tā",
         "pá",
         "guò",
@@ -420,13 +372,7 @@ window.registerBook({
         "lā",
         "lā",
         "tā",
-        ""
-      ]
-    },
-    {
-      "image": "images/p15.webp",
-      "text": "“小螃蟹，我要走了。”小青蟹说。",
-      "pinyin": [
+        "",
         "",
         "xiǎo",
         "páng",
@@ -446,8 +392,8 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p16.webp",
-      "text": "“什么？走？到哪儿去？”小螃蟹醒来了，吓了一跳。",
+      "image": "images/p7.webp",
+      "text": "“什么？走？到哪儿去？”小螃蟹醒来了，吓了一跳。“我想去找一个更好的地方住……”小螃蟹很吃惊：“难道这个地方不好吗？”",
       "pinyin": [
         "",
         "shén",
@@ -472,13 +418,7 @@ window.registerBook({
         "le",
         "yí",
         "tiào",
-        ""
-      ]
-    },
-    {
-      "image": "images/p17.webp",
-      "text": "“我想去找一个更好的地方住……”",
-      "pinyin": [
+        "",
         "",
         "wǒ",
         "xiǎng",
@@ -494,13 +434,7 @@ window.registerBook({
         "zhù",
         "",
         "",
-        ""
-      ]
-    },
-    {
-      "image": "images/p18.webp",
-      "text": "小螃蟹很吃惊：“难道这个地方不好吗？”",
-      "pinyin": [
+        "",
         "xiǎo",
         "páng",
         "xiè",
@@ -523,8 +457,8 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p19.webp",
-      "text": "小青蟹轻轻地说：“我也不知道，但是我真的要走了。”",
+      "image": "images/p8.webp",
+      "text": "小青蟹轻轻地说：“我也不知道，但是我真的要走了。”“可是，可是……”小螃蟹不知该说什么好。",
       "pinyin": [
         "xiǎo",
         "qīng",
@@ -550,13 +484,7 @@ window.registerBook({
         "zǒu",
         "le",
         "",
-        ""
-      ]
-    },
-    {
-      "image": "images/p20.webp",
-      "text": "“可是，可是……”小螃蟹不知该说什么好。",
-      "pinyin": [
+        "",
         "",
         "kě",
         "shì",
@@ -580,8 +508,8 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p21.webp",
-      "text": "第二天，小螃蟹看到小青蟹时，她已经走远了。",
+      "image": "images/p9.webp",
+      "text": "第二天，小螃蟹看到小青蟹时，她已经走远了。小青蟹转过身来，朝他挥了挥她的小钳子。",
       "pinyin": [
         "dì",
         "èr",
@@ -603,13 +531,7 @@ window.registerBook({
         "zǒu",
         "yuǎn",
         "le",
-        ""
-      ]
-    },
-    {
-      "image": "images/p22.webp",
-      "text": "小青蟹转过身来，朝他挥了挥她的小钳子。",
-      "pinyin": [
+        "",
         "xiǎo",
         "qīng",
         "xiè",
@@ -632,8 +554,8 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p23.webp",
-      "text": "小螃蟹很难过。",
+      "image": "images/p10.webp",
+      "text": "小螃蟹很难过。他用钳子敲敲墙壁：“咚，咚。”那边再也不会传过来“笃，笃”的声音了。小螃蟹一直在洞口坐到天黑。",
       "pinyin": [
         "xiǎo",
         "páng",
@@ -641,13 +563,7 @@ window.registerBook({
         "hěn",
         "nán",
         "guò",
-        ""
-      ]
-    },
-    {
-      "image": "images/p24.webp",
-      "text": "他用钳子敲敲墙壁：“咚，咚。”那边再也不会传过来“笃，笃”的声音了。",
-      "pinyin": [
+        "",
         "tā",
         "yòng",
         "qián",
@@ -681,13 +597,7 @@ window.registerBook({
         "shēng",
         "yīn",
         "le",
-        ""
-      ]
-    },
-    {
-      "image": "images/p25.webp",
-      "text": "小螃蟹一直在洞口坐到天黑。",
-      "pinyin": [
+        "",
         "xiǎo",
         "páng",
         "xiè",
@@ -704,7 +614,7 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p26.webp",
+      "image": "images/p11.webp",
       "text": "小螃蟹心里想：小青蟹现在到哪儿了呢？她是不是每天还会晒会儿太阳呢？她身上还是那么青吗……",
       "pinyin": [
         "xiǎo",
@@ -754,8 +664,8 @@ window.registerBook({
       ]
     },
     {
-      "image": "images/p27.webp",
-      "text": "不过，小螃蟹每天睡觉前还是要敲两下墙壁：“咚，咚。”",
+      "image": "images/p12.webp",
+      "text": "不过，小螃蟹每天睡觉前还是要敲两下墙壁：“咚，咚。”他是敲给自己听的。然后，小螃蟹就吐一大堆泡泡，把自己藏起来。他难过的时候，总是这样的。",
       "pinyin": [
         "bú",
         "guò",
@@ -782,13 +692,7 @@ window.registerBook({
         "",
         "dōng",
         "",
-        ""
-      ]
-    },
-    {
-      "image": "images/p28.webp",
-      "text": "他是敲给自己听的。",
-      "pinyin": [
+        "",
         "tā",
         "shì",
         "qiāo",
@@ -797,13 +701,7 @@ window.registerBook({
         "jǐ",
         "tīng",
         "de",
-        ""
-      ]
-    },
-    {
-      "image": "images/p29.webp",
-      "text": "然后，小螃蟹就吐一大堆泡泡，把自己藏起来。他难过的时候，总是这样的。",
-      "pinyin": [
+        "",
         "rán",
         "hòu",
         "",
