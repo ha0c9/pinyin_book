@@ -346,16 +346,17 @@ body[data-fontsize="xlarge"] .page-text {
   font-size: clamp(1.7rem, 2.6vw + 1rem, 2.5rem);
 }
 
-/* 一页里多个自然段：换行 + 首行缩进，和绘本分段一致 */
+/* 一页里多个自然段：换行 + 首行缩进。短段左对齐，避免两端对齐把字拉开。 */
 .story-para {
   text-indent: 2em;
-  text-align: justify;
+  text-align: left;
 }
 .story-para + .story-para {
-  margin-top: 0.35em;
+  margin-top: 0.45em;
 }
 .text-inner {
   width: 100%;
+  min-width: 0;
 }
 
 /* 横屏（含 iPad 横版）：左图右文 */
@@ -392,11 +393,16 @@ body[data-fontsize="xlarge"] .page-text {
   .page-text {
     grid-area: text;
     min-width: 0;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 1.2rem 2rem;
     background: transparent;
+  }
+  .page-text:has(.story-para) {
+    justify-content: flex-start;
+    overflow-y: auto;
   }
 }
 
@@ -409,6 +415,7 @@ body[data-fontsize="xlarge"] .page-text {
   transition: background 0.45s ease;
   display: inline-block;
   line-height: 1.35; /* 高亮块贴合字形，不随正文行高拉长 */
+  text-indent: 0; /* 不要继承自然段首行缩进，否则每个字都会被撑开 */
 }
 @media (hover: hover) and (pointer: fine) {
   .char:hover { background: var(--primary-soft); }
