@@ -1,4 +1,5 @@
-/* 书架与路由：按分类加载 book.js，封面只在当前分类渲染 */
+/* 书架与路由：按分类加载 book.js，封面只在当前分类渲染。
+   可分享链接：#/分类id 打开某一类；#/分类id/故事id 打开某一本。 */
 (function () {
   var booksByPath = {};
   var categories = [];
@@ -6,8 +7,10 @@
   var loadedPaths = {};
   var domReady = false;
   var catalogReady = false;
+  var toastTimer = null;
 
   var CATEGORY_KEY = "pinyinBook.shelfCategory";
+  var SITE_TITLE = "点读绘本屋";
 
   /* 每本书的 book.js 调用此函数完成注册。
      利用 document.currentScript 推断该书所在目录，用于解析图片相对路径。 */
@@ -75,7 +78,87 @@
     for (var i = 0; i < categories.length; i++) {
       if (categories[i].id === id) return categories[i];
     }
-    return categories[0] || null;
+    return null;
+  }
+
+  function bookIdFromPath(path) {
+    var m = String(path || "").match(/books\/([^/]+)\//);
+    return m ? m[1] : "";
+  }
+
+  function findBookEntry(bookId) {
+    if (!bookId) return null;
+    for (var i = 0; i < categories.length; i++) {
+      var cat = categories[i];
+      for (var j = 0; j < cat.books.length; j++) {
+        var path = cat.books[j];
+        if (bookIdFromPath(path) === bookId) return { cat: cat, path: path };
+      }
+    }
+    return null;
+  }
+
+  function routeHash(catId, bookId) {
+    var h = "#/" + encodeURIComponent(catId);
+    if (bookId) h += "/" + encodeURIComponent(bookId);
+    return h;
+  }
+
+  function parseRoute() {
+    var raw = (location.hash || "").replace(/^#/, "");
+    if (raw.charAt(0) === "/") raw = raw.slice(1);
+    var parts = raw.split("/").filter(Boolean).map(function (p) {
+      try { return decodeURIComponent(p); } catch (e) { return p; }
+    });
+    if (!parts.length) return { catId: null, bookId: null };
+
+    if (getCategory(parts[0])) {
+      return { catId: parts[0], bookId: parts[1] || null };
+    }
+    var found = findBookEntry(parts[0]);
+    if (found) return { catId: found.cat.id, bookId: parts[0] };
+    return { catId: null, bookId: null };
+  }
+
+  function shareUrl(catId, bookId) {
+    var base = location.href.replace(/#.*$/, "");
+    return base + routeHash(catId, bookId);
+  }
+
+  function showToast(msg) {
+    var el = document.getElementById("copy-toast");
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.add("show");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      el.classList.remove("show");
+    }, 1800);
+  }
+
+  function copyText(text, okMsg) {
+    function done() { showToast(okMsg || "链接已复制"); }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.left = "-9999px";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        done();
+      } catch (e) {
+        showToast("请从地址栏复制链接");
+      }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(fallback);
+    } else {
+      fallback();
+    }
   }
 
   function loadCategoryScripts(cat, done) {
@@ -107,7 +190,7 @@
   }
 
   /* ---- 视图切换 ---- */
-  function showShelf() {
+  function showShelfView() {
     document.getElementById("reader-view").classList.add("hidden");
     document.getElementById("shelf-view").classList.remove("hidden");
     window.Reader.close();
@@ -119,22 +202,29 @@
     window.Reader.open(book);
   }
 
+  function setDocumentTitle(cat, book) {
+    if (book) {
+      document.title = book.title + " · " + SITE_TITLE;
+    } else if (cat) {
+      document.title = cat.name + " · " + SITE_TITLE;
+    } else {
+      document.title = SITE_TITLE;
+    }
+  }
+
   /* ---- 分类栏 ---- */
   function renderCategoryBar() {
     var bar = document.getElementById("category-bar");
     bar.innerHTML = "";
     categories.forEach(function (cat) {
-      var btn = document.createElement("button");
-      btn.type = "button";
+      var btn = document.createElement("a");
+      btn.href = routeHash(cat.id);
       btn.className = "category-chip";
       btn.dataset.id = cat.id;
       btn.setAttribute("role", "tab");
       btn.setAttribute("aria-selected", cat.id === currentCategoryId ? "true" : "false");
       btn.textContent = cat.name;
-      btn.addEventListener("click", function () {
-        if (cat.id === currentCategoryId) return;
-        selectCategory(cat.id);
-      });
+      btn.title = "打开「" + cat.name + "」分类";
       bar.appendChild(btn);
     });
   }
@@ -190,9 +280,10 @@
       if (!book) return;
       shown++;
 
-      var card = document.createElement("button");
-      card.type = "button";
+      var card = document.createElement("a");
+      card.href = routeHash(cat.id, book.id);
       card.className = "book-card";
+      card.title = "打开《" + book.title + "》";
 
       var coverWrap = document.createElement("div");
       coverWrap.className = "card-cover";
@@ -227,7 +318,6 @@
         (book.grade ? " · 适合" + book.grade + "年级" : "");
       card.appendChild(meta);
 
-      card.addEventListener("click", function () { openBook(book); });
       grid.appendChild(card);
     });
 
@@ -236,14 +326,15 @@
     }
   }
 
-  function selectCategory(id) {
-    var cat = getCategory(id);
+  function showCategory(id) {
+    var cat = getCategory(id) || categories[0];
     if (!cat) return;
     currentCategoryId = cat.id;
     try { localStorage.setItem(CATEGORY_KEY, cat.id); } catch (e) {}
 
     updateChipState();
     updateHint(cat);
+    setDocumentTitle(cat, null);
 
     var grid = document.getElementById("shelf-grid");
     clearCoverLoads(grid);
@@ -256,6 +347,59 @@
     });
   }
 
+  function applyRoute() {
+    if (!categories.length) return;
+    var route = parseRoute();
+    var entry = route.bookId ? findBookEntry(route.bookId) : null;
+    var cat = entry ? entry.cat : (getCategory(route.catId) || getCategory(currentCategoryId) || categories[0]);
+    if (!cat) return;
+
+    if (entry) {
+      currentCategoryId = cat.id;
+      try { localStorage.setItem(CATEGORY_KEY, cat.id); } catch (e) {}
+      updateChipState();
+      updateHint(cat);
+
+      var requested = entry.path;
+      loadCategoryScripts(cat, function () {
+        var book = booksByPath[requested];
+        if (!book) {
+          showShelfView();
+          renderShelf(cat);
+          setDocumentTitle(cat, null);
+          return;
+        }
+        renderShelf(cat);
+        openBook(book);
+        setDocumentTitle(cat, book);
+      });
+      return;
+    }
+
+    showShelfView();
+    if (currentCategoryId === cat.id && document.querySelector("#shelf-grid .book-card")) {
+      updateChipState();
+      updateHint(cat);
+      setDocumentTitle(cat, null);
+      return;
+    }
+    showCategory(cat.id);
+  }
+
+  function goHome() {
+    var catId = currentCategoryId || (categories[0] && categories[0].id);
+    if (!catId) {
+      showShelfView();
+      return;
+    }
+    var hash = routeHash(catId);
+    if ((location.hash || "") === hash) {
+      applyRoute();
+    } else {
+      location.hash = hash;
+    }
+  }
+
   function initShelf() {
     if (!categories.length) {
       document.getElementById("shelf-grid").innerHTML =
@@ -263,17 +407,39 @@
       return;
     }
 
-    var saved = null;
-    try { saved = localStorage.getItem(CATEGORY_KEY); } catch (e) {}
-    var initial = getCategory(saved) ? saved : categories[0].id;
+    var route = parseRoute();
+    if (!route.catId && !route.bookId) {
+      var saved = null;
+      try { saved = localStorage.getItem(CATEGORY_KEY); } catch (e) {}
+      var initial = getCategory(saved) ? saved : categories[0].id;
+      history.replaceState(null, "", routeHash(initial));
+    }
 
     renderCategoryBar();
-    selectCategory(initial);
+    applyRoute();
   }
 
   document.addEventListener("DOMContentLoaded", function () {
     domReady = true;
-    document.getElementById("back-btn").addEventListener("click", showShelf);
+    document.getElementById("back-btn").addEventListener("click", goHome);
+
+    var shareCat = document.getElementById("share-cat-btn");
+    if (shareCat) {
+      shareCat.addEventListener("click", function () {
+        var catId = currentCategoryId || (categories[0] && categories[0].id);
+        if (!catId) return;
+        copyText(shareUrl(catId), "分类链接已复制");
+      });
+    }
+    var shareBook = document.getElementById("share-book-btn");
+    if (shareBook) {
+      shareBook.addEventListener("click", function () {
+        var book = window.Reader.currentBook && window.Reader.currentBook();
+        var catId = currentCategoryId;
+        if (!book || !catId) return;
+        copyText(shareUrl(catId, book.id), "故事链接已复制");
+      });
+    }
 
     var bar = document.getElementById("category-bar");
     bar.addEventListener("keydown", function (e) {
@@ -286,9 +452,11 @@
       if (idx < 0) idx = chips.length - 1;
       if (idx >= chips.length) idx = 0;
       chips[idx].focus();
-      selectCategory(chips[idx].dataset.id);
+      location.hash = routeHash(chips[idx].dataset.id);
       e.preventDefault();
     });
+
+    window.addEventListener("hashchange", applyRoute);
 
     if (catalogReady) initShelf();
   });
