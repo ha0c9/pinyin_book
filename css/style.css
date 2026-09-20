@@ -44,6 +44,7 @@ html, body {
   cursor: pointer;
   box-shadow: var(--shadow);
   transition: transform 0.15s;
+  touch-action: manipulation;
 }
 .icon-btn:active { transform: scale(0.9); }
 
@@ -483,18 +484,20 @@ body[data-fontsize="xlarge"] .page-text {
 .copy-toast {
   position: fixed;
   left: 50%;
-  bottom: 1.6rem;
+  bottom: max(1.6rem, calc(env(safe-area-inset-bottom, 0px) + 1.2rem));
   transform: translateX(-50%) translateY(8px);
   background: #4a3b2a;
   color: #fff;
   padding: 0.55rem 1.2rem;
   border-radius: 999px;
   font-size: 0.95rem;
-  z-index: 80;
+  z-index: 1100;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s, transform 0.2s;
   box-shadow: var(--shadow);
+  max-width: calc(100vw - 2rem);
+  text-align: center;
 }
 .copy-toast.show {
   opacity: 1;
@@ -568,6 +571,46 @@ body[data-fontsize="xlarge"] .page-text {
   cursor: pointer;
 }
 .settings-close:active { transform: scale(0.97); }
+
+.share-panel .share-desc {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: -0.6rem 0 1rem;
+}
+.share-url-input {
+  display: block;
+  width: 100%;
+  min-height: 2.5rem;
+  margin-bottom: 0.9rem;
+  padding: 0.7rem 0.85rem;
+  border: 2px solid var(--primary-soft);
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  resize: none;
+  font-family: inherit;
+}
+.share-native-btn {
+  background: #5b8def;
+  margin-top: 0.65rem;
+}
+.share-dismiss {
+  width: 100%;
+  margin-top: 0.65rem;
+  padding: 0.75rem;
+  border: 2px solid var(--primary-soft);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+.share-dismiss:active { transform: scale(0.97); }
 
 /* 手机窄屏微调 */
 @media (max-width: 600px) {

@@ -136,29 +136,94 @@
     }, 1800);
   }
 
+  /* 同步复制：必须在点击手势里立刻执行。clipboard.writeText 在微信/iOS 里经常卡住，
+     不能把它当成主路径，否则按钮会像“没反应”。 */
+  function copyWithExecCommand(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.setAttribute("aria-hidden", "true");
+    ta.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;padding:0;border:0;opacity:0.01;";
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { ta.setSelectionRange(0, text.length); } catch (e) {}
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return !!ok;
+  }
+
   function copyText(text, okMsg) {
-    function done() { showToast(okMsg || "链接已复制"); }
-    function fallback() {
-      var ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.left = "-9999px";
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        document.execCommand("copy");
-        done();
-      } catch (e) {
-        showToast("请从地址栏复制链接");
-      }
-      document.body.removeChild(ta);
+    if (copyWithExecCommand(text)) {
+      showToast(okMsg || "链接已复制");
+      return Promise.resolve(true);
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(fallback);
-    } else {
-      fallback();
+      return new Promise(function (resolve) {
+        var settled = false;
+        function finish(ok) {
+          if (settled) return;
+          settled = true;
+          if (ok) showToast(okMsg || "链接已复制");
+          resolve(!!ok);
+        }
+        navigator.clipboard.writeText(text).then(function () {
+          finish(true);
+        }).catch(function () {
+          finish(false);
+        });
+        setTimeout(function () { finish(false); }, 700);
+      });
     }
+    return Promise.resolve(false);
+  }
+
+  function canNativeShare(url) {
+    try {
+      return !!(navigator.share && (!navigator.canShare || navigator.canShare({ url: url })));
+    } catch (e) {
+      return !!navigator.share;
+    }
+  }
+
+  function closeSharePanel() {
+    var overlay = document.getElementById("share-overlay");
+    if (overlay) overlay.classList.add("hidden");
+  }
+
+  function openSharePanel(url, heading) {
+    var overlay = document.getElementById("share-overlay");
+    var input = document.getElementById("share-url-input");
+    var title = document.getElementById("share-title");
+    var copyBtn = document.getElementById("share-copy-btn");
+    var nativeBtn = document.getElementById("share-native-btn");
+    if (!overlay || !input) {
+      copyText(url, "链接已复制");
+      return;
+    }
+    if (title) title.textContent = heading || "分享链接";
+    input.value = url;
+    if (copyBtn) copyBtn.textContent = "复制链接";
+    overlay.classList.remove("hidden");
+    input.style.height = "auto";
+    input.style.height = Math.min(160, Math.max(52, input.scrollHeight + 2)) + "px";
+
+    if (nativeBtn) {
+      nativeBtn.classList.toggle("hidden", !canNativeShare(url));
+      nativeBtn.dataset.url = url;
+      nativeBtn.dataset.title = heading || SITE_TITLE;
+    }
+
+    try {
+      input.focus();
+      input.select();
+      input.setSelectionRange(0, url.length);
+    } catch (e) {}
+
+    copyText(url, "链接已复制").then(function (ok) {
+      if (ok && copyBtn) copyBtn.textContent = "已复制";
+    });
   }
 
   function loadCategoryScripts(cat, done) {
@@ -428,7 +493,8 @@
       shareCat.addEventListener("click", function () {
         var catId = currentCategoryId || (categories[0] && categories[0].id);
         if (!catId) return;
-        copyText(shareUrl(catId), "分类链接已复制");
+        var cat = getCategory(catId);
+        openSharePanel(shareUrl(catId), cat ? "分享「" + cat.name + "」" : "分享分类");
       });
     }
     var shareBook = document.getElementById("share-book-btn");
@@ -437,9 +503,49 @@
         var book = window.Reader.currentBook && window.Reader.currentBook();
         var catId = currentCategoryId;
         if (!book || !catId) return;
-        copyText(shareUrl(catId, book.id), "故事链接已复制");
+        openSharePanel(shareUrl(catId, book.id), "分享《" + book.title + "》");
       });
     }
+
+    var shareOverlay = document.getElementById("share-overlay");
+    var shareInput = document.getElementById("share-url-input");
+    var shareCopyBtn = document.getElementById("share-copy-btn");
+    var shareNativeBtn = document.getElementById("share-native-btn");
+    var shareCloseBtn = document.getElementById("share-close-btn");
+    if (shareCloseBtn) shareCloseBtn.addEventListener("click", closeSharePanel);
+    if (shareOverlay) {
+      shareOverlay.addEventListener("click", function (e) {
+        if (e.target === shareOverlay) closeSharePanel();
+      });
+    }
+    if (shareInput) {
+      shareInput.addEventListener("focus", function () {
+        try {
+          shareInput.select();
+          shareInput.setSelectionRange(0, shareInput.value.length);
+        } catch (e) {}
+      });
+    }
+    if (shareCopyBtn && shareInput) {
+      shareCopyBtn.addEventListener("click", function () {
+        copyText(shareInput.value, "链接已复制").then(function (ok) {
+          shareCopyBtn.textContent = ok ? "已复制" : "请长按上面的链接复制";
+        });
+      });
+    }
+    if (shareNativeBtn) {
+      shareNativeBtn.addEventListener("click", function () {
+        var url = shareNativeBtn.dataset.url;
+        var title = shareNativeBtn.dataset.title || SITE_TITLE;
+        if (!url || !navigator.share) return;
+        navigator.share({ title: title, text: title, url: url }).catch(function () {});
+      });
+    }
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      var overlay = document.getElementById("share-overlay");
+      if (overlay && !overlay.classList.contains("hidden")) closeSharePanel();
+    });
 
     var bar = document.getElementById("category-bar");
     bar.addEventListener("keydown", function (e) {
