@@ -14,7 +14,7 @@
     <header class="shelf-header">
       <h1><span class="logo-icon">📚</span> 点读绘本屋</h1>
       <div class="shelf-header-right">
-        <button id="share-cat-btn" class="icon-btn" title="复制本分类链接" aria-label="复制本分类链接">🔗</button>
+        <button type="button" id="share-cat-btn" class="icon-btn" title="分享本分类链接" aria-label="分享本分类链接">🔗</button>
         <button id="settings-btn" class="icon-btn" title="设置" aria-label="设置">⚙️</button>
       </div>
     </header>
@@ -34,7 +34,7 @@
         <button id="first-page-btn" class="page-tool-btn" title="回到第一页" aria-label="回到第一页">⏮</button>
         <span id="page-indicator" class="page-indicator"></span>
       </div>
-      <button id="share-book-btn" class="icon-btn" title="复制本故事链接" aria-label="复制本故事链接">🔗</button>
+      <button type="button" id="share-book-btn" class="icon-btn" title="分享本故事链接" aria-label="分享本故事链接">🔗</button>
       <button id="settings-btn-2" class="icon-btn" title="设置" aria-label="设置">⚙️</button>
     </div>
   </header>
@@ -78,6 +78,17 @@
     </div>
 
     <button id="settings-close" class="settings-close">好啦</button>
+  </div>
+</div>
+
+<div id="share-overlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="share-title">
+  <div class="settings-panel share-panel">
+    <h2 id="share-title">分享链接</h2>
+    <p class="share-desc">把链接发给家人，就能打开这一类或这一本故事。也可以长按下面的地址复制。</p>
+    <input id="share-url-input" class="share-url-input" type="text" readonly>
+    <button type="button" id="share-copy-btn" class="settings-close">复制链接</button>
+    <button type="button" id="share-native-btn" class="settings-close share-native-btn hidden">发给家人</button>
+    <button type="button" id="share-close-btn" class="share-dismiss">关闭</button>
   </div>
 </div>
 
