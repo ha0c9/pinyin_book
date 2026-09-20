@@ -581,6 +581,7 @@ body[data-fontsize="xlarge"] .page-text {
 .share-url-input {
   display: block;
   width: 100%;
+  min-height: 3.2rem;
   margin-bottom: 0.9rem;
   padding: 0.7rem 0.85rem;
   border: 2px solid var(--primary-soft);
@@ -590,6 +591,9 @@ body[data-fontsize="xlarge"] .page-text {
   font-size: 0.92rem;
   line-height: 1.4;
   word-break: break-all;
+  overflow-wrap: anywhere;
+  resize: none;
+  font-family: inherit;
 }
 .share-native-btn {
   background: #5b8def;

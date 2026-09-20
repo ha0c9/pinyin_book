@@ -206,6 +206,8 @@
     input.value = url;
     if (copyBtn) copyBtn.textContent = "复制链接";
     overlay.classList.remove("hidden");
+    input.style.height = "auto";
+    input.style.height = Math.min(160, Math.max(52, input.scrollHeight + 2)) + "px";
 
     if (nativeBtn) {
       nativeBtn.classList.toggle("hidden", !canNativeShare(url));
