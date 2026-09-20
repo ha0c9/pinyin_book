@@ -13,7 +13,10 @@
   <div class="shelf-top">
     <header class="shelf-header">
       <h1><span class="logo-icon">📚</span> 点读绘本屋</h1>
-      <button id="settings-btn" class="icon-btn" title="设置" aria-label="设置">⚙️</button>
+      <div class="shelf-header-right">
+        <button id="share-cat-btn" class="icon-btn" title="复制本分类链接" aria-label="复制本分类链接">🔗</button>
+        <button id="settings-btn" class="icon-btn" title="设置" aria-label="设置">⚙️</button>
+      </div>
     </header>
     <nav id="category-bar" class="category-bar" role="tablist" aria-label="故事分类"></nav>
   </div>
@@ -31,6 +34,7 @@
         <button id="first-page-btn" class="page-tool-btn" title="回到第一页" aria-label="回到第一页">⏮</button>
         <span id="page-indicator" class="page-indicator"></span>
       </div>
+      <button id="share-book-btn" class="icon-btn" title="复制本故事链接" aria-label="复制本故事链接">🔗</button>
       <button id="settings-btn-2" class="icon-btn" title="设置" aria-label="设置">⚙️</button>
     </div>
   </header>
@@ -76,6 +80,8 @@
     <button id="settings-close" class="settings-close">好啦</button>
   </div>
 </div>
+
+<div id="copy-toast" class="copy-toast" role="status" aria-live="polite"></div>
 
 <script src="js/settings.js"></script>
 <script src="js/reader.js"></script>

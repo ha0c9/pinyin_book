@@ -259,6 +259,9 @@
       var view = document.getElementById("reader-view");
       if (view) view.classList.remove("lang-en");
       clearPageImage();
+    },
+    currentBook: function () {
+      return currentBook;
     }
   };
 
